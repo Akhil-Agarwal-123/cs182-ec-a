@@ -234,9 +234,13 @@ const ContentRenderer = ({ xmlContent }) => {
           <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Attachments</div>
           <div className="grid grid-cols-1 gap-4">
             {files.map((file, idx) => {
-              const isPdf = file.name.toLowerCase().endsWith('.pdf') || file.url.toLowerCase().includes('.pdf');
-              // Use Google Docs Viewer for PDF preview
-              const viewerUrl = isPdf
+              // UPDATED LOGIC: Check for Office docs AND PDFs
+              // This regex checks for .pdf, .doc, .docx, .ppt, .pptx, .xls, .xlsx
+              const isViewableDoc = /\.(pdf|docx?|pptx?|xlsx?)$/i.test(file.name) ||
+                                    /\.(pdf|docx?|pptx?|xlsx?)$/i.test(file.url);
+
+              // If it is a viewable doc, use Google Viewer. Otherwise (e.g. images), use direct link.
+              const viewerUrl = isViewableDoc
                 ? `https://docs.google.com/gview?url=${encodeURIComponent(file.url)}&embedded=true`
                 : file.url;
 
