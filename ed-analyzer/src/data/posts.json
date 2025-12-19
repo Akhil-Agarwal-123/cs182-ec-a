@@ -17,8 +17,8 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 93,
-      "unique_view_count": 58,
+      "view_count": 95,
+      "unique_view_count": 60,
       "vote_count": 0,
       "reply_count": 0,
       "unresolved_count": 0,
@@ -35,7 +35,7 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-12-11T18:53:55.259297+11:00",
-      "updated_at": "2025-12-18T20:29:56.317509+11:00",
+      "updated_at": "2025-12-19T17:52:14.518427+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
@@ -48,6 +48,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Rudy Colato",
       "homework_number": 10,
       "llm": "Deepseek"
    },
@@ -69,8 +70,8 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 54,
-      "unique_view_count": 39,
+      "view_count": 59,
+      "unique_view_count": 41,
       "vote_count": 0,
       "reply_count": 0,
       "unresolved_count": 0,
@@ -87,19 +88,20 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-12-11T18:42:18.322678+11:00",
-      "updated_at": "2025-12-18T19:05:32.454155+11:00",
+      "updated_at": "2025-12-20T10:22:31.433492+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
       "vote": 0,
-      "is_seen": false,
+      "is_seen": true,
       "is_starred": false,
       "is_watched": null,
-      "glanced_at": null,
+      "glanced_at": "2025-12-20T10:22:31.434579+11:00",
       "new_reply_count": 0,
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Yu-Jen Lin",
       "homework_number": 11,
       "llm": "Gpt"
    },
@@ -121,8 +123,8 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 39,
-      "unique_view_count": 26,
+      "view_count": 43,
+      "unique_view_count": 28,
       "vote_count": 0,
       "reply_count": 0,
       "unresolved_count": 0,
@@ -139,7 +141,7 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-12-11T18:27:14.676364+11:00",
-      "updated_at": "2025-12-19T11:34:51.478981+11:00",
+      "updated_at": "2025-12-19T17:29:19.593469+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
@@ -152,6 +154,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Tvisha Londhe",
       "homework_number": 7,
       "llm": "Mistral"
    },
@@ -173,8 +176,8 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 50,
-      "unique_view_count": 32,
+      "view_count": 53,
+      "unique_view_count": 33,
       "vote_count": 0,
       "reply_count": 0,
       "unresolved_count": 0,
@@ -191,19 +194,20 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-12-11T18:24:35.225606+11:00",
-      "updated_at": "2025-12-19T10:21:08.362487+11:00",
+      "updated_at": "2025-12-20T10:22:39.596566+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
       "vote": 0,
-      "is_seen": false,
+      "is_seen": true,
       "is_starred": false,
       "is_watched": null,
-      "glanced_at": null,
+      "glanced_at": "2025-12-20T10:22:39.597034+11:00",
       "new_reply_count": 0,
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jason Lee",
       "homework_number": 13,
       "llm": "Gpt"
    },
@@ -225,8 +229,8 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 30,
-      "unique_view_count": 16,
+      "view_count": 32,
+      "unique_view_count": 17,
       "vote_count": 0,
       "reply_count": 0,
       "unresolved_count": 0,
@@ -243,7 +247,7 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-12-11T17:20:59.615129+11:00",
-      "updated_at": "2025-12-18T18:27:57.61689+11:00",
+      "updated_at": "2025-12-19T13:02:42.67487+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
@@ -256,6 +260,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Katie Wang",
       "homework_number": 5,
       "llm": "Gemini"
    },
@@ -277,8 +282,8 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 39,
-      "unique_view_count": 17,
+      "view_count": 41,
+      "unique_view_count": 19,
       "vote_count": 0,
       "reply_count": 0,
       "unresolved_count": 0,
@@ -295,19 +300,20 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-12-11T17:16:39.774793+11:00",
-      "updated_at": "2025-12-18T17:56:46.886069+11:00",
+      "updated_at": "2025-12-20T10:22:50.56804+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
       "vote": 0,
-      "is_seen": false,
+      "is_seen": true,
       "is_starred": false,
       "is_watched": null,
-      "glanced_at": null,
+      "glanced_at": "2025-12-20T10:22:50.568784+11:00",
       "new_reply_count": 0,
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Will Cai",
       "homework_number": 12,
       "llm": "Claude"
    },
@@ -329,8 +335,8 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 41,
-      "unique_view_count": 17,
+      "view_count": 43,
+      "unique_view_count": 19,
       "vote_count": 0,
       "reply_count": 0,
       "unresolved_count": 0,
@@ -347,7 +353,7 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-12-11T16:47:23.141899+11:00",
-      "updated_at": "2025-12-18T18:27:45.296912+11:00",
+      "updated_at": "2025-12-19T17:08:12.28644+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
@@ -360,6 +366,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Shaurya Jain",
       "homework_number": 8,
       "llm": "Gpt"
    },
@@ -412,6 +419,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Andrea Lou",
       "homework_number": 0,
       "llm": "Deepseek"
    },
@@ -464,6 +472,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Siva Tanikonda",
       "homework_number": 1,
       "llm": "Gemma"
    },
@@ -516,6 +525,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Arnav Dalal",
       "homework_number": 6,
       "llm": "Gemini"
    },
@@ -568,6 +578,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Talon Meyer",
       "homework_number": 0,
       "llm": "Claude"
    },
@@ -620,6 +631,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Yubo Fan",
       "homework_number": 1,
       "llm": "Deepseek"
    },
@@ -672,6 +684,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Celine Tan",
       "homework_number": 8,
       "llm": "Claude"
    },
@@ -724,6 +737,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jeshu Mohan",
       "homework_number": 0,
       "llm": "Deepseek"
    },
@@ -776,6 +790,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Anjo Pagdanganan",
       "homework_number": 2,
       "llm": "Gpt"
    },
@@ -828,6 +843,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Subhash Prasad",
       "homework_number": 9,
       "llm": "Mistral"
    },
@@ -880,6 +896,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Atharv Sampath",
       "homework_number": 8,
       "llm": "Claude"
    },
@@ -932,6 +949,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Yuri Lee",
       "homework_number": 1,
       "llm": "Gemini"
    },
@@ -984,6 +1002,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Sarvagya Somvanshi",
       "homework_number": 10,
       "llm": "Grok"
    },
@@ -1036,6 +1055,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Eric Wang",
       "homework_number": 5,
       "llm": "Gpt"
    },
@@ -1088,6 +1108,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Arjun Kohli",
       "homework_number": 1,
       "llm": "Claude"
    },
@@ -1140,6 +1161,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Paul Struble",
       "homework_number": 3,
       "llm": "Gpt"
    },
@@ -1192,6 +1214,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Tiffany Dang",
       "homework_number": 12,
       "llm": "Qwen"
    },
@@ -1244,6 +1267,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Eric Jin",
       "homework_number": 9,
       "llm": "Grok"
    },
@@ -1296,6 +1320,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Shuwei Yang",
       "homework_number": 13,
       "llm": "Deepseek"
    },
@@ -1348,6 +1373,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Rahul Bir",
       "homework_number": 9,
       "llm": "Grok"
    },
@@ -1400,6 +1426,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Neel Kolhe",
       "homework_number": 4,
       "llm": "Gpt"
    },
@@ -1452,6 +1479,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Martin Alvarez-Kuglen",
       "homework_number": 8,
       "llm": "Perplexity"
    },
@@ -1504,6 +1532,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Arvind Kruthiventy",
       "homework_number": 10,
       "llm": "Gemini"
    },
@@ -1556,6 +1585,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Justin Yang",
       "homework_number": 0,
       "llm": "Claude"
    },
@@ -1608,6 +1638,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Akshaan Ahuja",
       "homework_number": 11,
       "llm": "Mistral"
    },
@@ -1660,6 +1691,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Elizabeth Weaver",
       "homework_number": 4,
       "llm": "Claude"
    },
@@ -1712,6 +1744,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jincheng Ou",
       "homework_number": 12,
       "llm": "Gemini"
    },
@@ -1764,6 +1797,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Evan Davis",
       "homework_number": 12,
       "llm": "Gpt"
    },
@@ -1816,6 +1850,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Rohan Gopalam",
       "homework_number": 11,
       "llm": "Claude"
    },
@@ -1868,6 +1903,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Ethan Stone",
       "homework_number": 6,
       "llm": "Gpt"
    },
@@ -1920,6 +1956,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Peidong Zhang",
       "homework_number": 13,
       "llm": "Qwen"
    },
@@ -1972,6 +2009,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Andy Peng",
       "homework_number": 13,
       "llm": "Claude"
    },
@@ -2024,6 +2062,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Micah Mok",
       "homework_number": 6,
       "llm": "Qwen"
    },
@@ -2076,6 +2115,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Swetha Rajkumar",
       "homework_number": 10,
       "llm": "Claude"
    },
@@ -2128,6 +2168,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Tom Chen",
       "homework_number": 13,
       "llm": "Gemini"
    },
@@ -2180,6 +2221,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Sufjan Fana",
       "homework_number": 7,
       "llm": "Claude"
    },
@@ -2232,6 +2274,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Manan Roongta",
       "homework_number": 6,
       "llm": "Claude"
    },
@@ -2284,6 +2327,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Aryan Bansal",
       "homework_number": 2,
       "llm": "Gemini"
    },
@@ -2336,6 +2380,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Sanjay Adhikesaven",
       "homework_number": 10,
       "llm": "Gpt"
    },
@@ -2388,6 +2433,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "John Wang",
       "homework_number": 3,
       "llm": "Gemini"
    },
@@ -2440,6 +2486,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Menger Wen",
       "homework_number": 6,
       "llm": "Grok"
    },
@@ -2492,6 +2539,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "WeiYi Zhang",
       "homework_number": 5,
       "llm": "Gpt"
    },
@@ -2544,6 +2592,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Abdelaziz Mohamed",
       "homework_number": 4,
       "llm": "Gpt"
    },
@@ -2596,6 +2645,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Shoumik Roychowdhury",
       "homework_number": 10,
       "llm": "Gpt"
    },
@@ -2648,6 +2698,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Peyton Schales",
       "homework_number": 7,
       "llm": "Gpt"
    },
@@ -2700,6 +2751,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Tiger Zhang",
       "homework_number": 4,
       "llm": "Gemini"
    },
@@ -2752,6 +2804,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Garv Goswami",
       "homework_number": 1,
       "llm": "Gemini"
    },
@@ -2804,6 +2857,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jacqueline Thibault",
       "homework_number": 1,
       "llm": "Gpt"
    },
@@ -2856,6 +2910,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jaewon Chang",
       "homework_number": 7,
       "llm": "Gpt"
    },
@@ -2908,6 +2963,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Anshul Verma",
       "homework_number": 3,
       "llm": "Claude"
    },
@@ -2960,6 +3016,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Edward Zhang",
       "homework_number": 7,
       "llm": "Deepseek"
    },
@@ -3012,6 +3069,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Hiya Shah",
       "homework_number": 11,
       "llm": "Llama"
    },
@@ -3064,6 +3122,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Diana Kohr",
       "homework_number": 1,
       "llm": "Gemini"
    },
@@ -3116,6 +3175,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Keshab Agarwal",
       "homework_number": 10,
       "llm": "Claude"
    },
@@ -3168,6 +3228,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Reyna Liu",
       "homework_number": 11,
       "llm": "Qwen"
    },
@@ -3220,6 +3281,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jermaine Lei",
       "homework_number": 8,
       "llm": "Gpt"
    },
@@ -3272,6 +3334,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Nazar Ospanov",
       "homework_number": 3,
       "llm": "Gemini"
    },
@@ -3324,6 +3387,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Daniel Kao",
       "homework_number": 11,
       "llm": "Deepseek"
    },
@@ -3376,6 +3440,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Sriram Srivatsan",
       "homework_number": 12,
       "llm": "Gpt"
    },
@@ -3428,6 +3493,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Natalie Wei",
       "homework_number": 8,
       "llm": "Mistral"
    },
@@ -3480,6 +3546,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Tyler Pham",
       "homework_number": 9,
       "llm": "Deepseek"
    },
@@ -3532,6 +3599,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Devan Perkash",
       "homework_number": 12,
       "llm": "Mistral"
    },
@@ -3584,6 +3652,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Nikhil Mathihalli",
       "homework_number": 12,
       "llm": "Grok"
    },
@@ -3636,6 +3705,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Kevin Tseng",
       "homework_number": 2,
       "llm": "Gpt"
    },
@@ -3657,8 +3727,8 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 44,
-      "unique_view_count": 23,
+      "view_count": 45,
+      "unique_view_count": 24,
       "vote_count": 0,
       "reply_count": 0,
       "unresolved_count": 0,
@@ -3675,19 +3745,20 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-12-07T18:12:51.093512+11:00",
-      "updated_at": "2025-12-18T18:21:17.965568+11:00",
+      "updated_at": "2025-12-20T09:04:13.591733+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
       "vote": 0,
-      "is_seen": false,
+      "is_seen": true,
       "is_starred": false,
       "is_watched": null,
-      "glanced_at": null,
+      "glanced_at": "2025-12-20T09:04:13.592456+11:00",
       "new_reply_count": 0,
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Aaron Zheng",
       "homework_number": 0,
       "llm": "Gpt"
    },
@@ -3740,6 +3811,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Zhengwei Fan",
       "homework_number": 10,
       "llm": "Gemini"
    },
@@ -3792,6 +3864,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Rishi Thakar",
       "homework_number": 5,
       "llm": "Claude"
    },
@@ -3844,6 +3917,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Joshua Lu",
       "homework_number": 9,
       "llm": "Gemini"
    },
@@ -3896,6 +3970,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Kexin Liu",
       "homework_number": 7,
       "llm": "Gpt"
    },
@@ -3948,6 +4023,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Shreyes Sridhara",
       "homework_number": 10,
       "llm": "Gpt"
    },
@@ -4000,6 +4076,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Cameron Jordan",
       "homework_number": 2,
       "llm": "Qwen"
    },
@@ -4052,6 +4129,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Athul Krishnan",
       "homework_number": 9,
       "llm": "Claude"
    },
@@ -4104,6 +4182,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Carolyn Liu",
       "homework_number": 9,
       "llm": "Gpt"
    },
@@ -4156,6 +4235,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jiayi Zhang",
       "homework_number": 5,
       "llm": "Gpt"
    },
@@ -4208,6 +4288,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Neil Pattanaik",
       "homework_number": 7,
       "llm": "Deepseek"
    },
@@ -4260,6 +4341,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Mihir Rao",
       "homework_number": 3,
       "llm": "Gpt"
    },
@@ -4312,6 +4394,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Trenton O'Bannon",
       "homework_number": 12,
       "llm": "Gpt"
    },
@@ -4415,11 +4498,14 @@
                   "deleted_at": null,
                   "anonymous_id": 0,
                   "vote": 0,
-                  "comments": []
+                  "comments": [],
+                  "user_name": "Jin Ying"
                }
-            ]
+            ],
+            "user_name": "Anant Sahai"
          }
       ],
+      "user_name": "Jin Ying",
       "homework_number": 13,
       "llm": "Gpt"
    },
@@ -4441,7 +4527,7 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 103,
+      "view_count": 106,
       "unique_view_count": 59,
       "vote_count": 0,
       "reply_count": 0,
@@ -4459,7 +4545,7 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-12-06T14:19:20.154941+11:00",
-      "updated_at": "2025-12-18T18:20:01.181429+11:00",
+      "updated_at": "2025-12-20T10:23:22.493941+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
@@ -4467,11 +4553,12 @@
       "is_seen": true,
       "is_starred": false,
       "is_watched": true,
-      "glanced_at": "2025-12-07T07:09:31.390161+11:00",
+      "glanced_at": "2025-12-20T10:23:22.49448+11:00",
       "new_reply_count": 0,
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Akhil Agarwal",
       "homework_number": 4,
       "llm": "Mistral"
    },
@@ -4524,6 +4611,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Mishty Dhekial",
       "homework_number": 8,
       "llm": "Gemini"
    },
@@ -4576,6 +4664,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Grant Yang",
       "homework_number": 6,
       "llm": "Gemini"
    },
@@ -4628,6 +4717,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "William Li",
       "homework_number": 9,
       "llm": "Kimi"
    },
@@ -4680,6 +4770,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Alena Chao",
       "homework_number": 0,
       "llm": "Gpt"
    },
@@ -4732,6 +4823,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Moxin Tang",
       "homework_number": 6,
       "llm": "Kimi"
    },
@@ -4784,6 +4876,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Guohao Lv",
       "homework_number": 6,
       "llm": "Claude"
    },
@@ -4887,7 +4980,8 @@
                   "deleted_at": null,
                   "anonymous_id": 0,
                   "vote": 0,
-                  "comments": []
+                  "comments": [],
+                  "user_name": "Tom Chen"
                },
                {
                   "id": 17240237,
@@ -4914,11 +5008,14 @@
                   "deleted_at": null,
                   "anonymous_id": 0,
                   "vote": 0,
-                  "comments": []
+                  "comments": [],
+                  "user_name": "Tom Chen"
                }
-            ]
+            ],
+            "user_name": "Anant Sahai"
          }
       ],
+      "user_name": "Tom Chen",
       "homework_number": 13,
       "llm": "Gemini"
    },
@@ -4971,6 +5068,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Zimu Wang",
       "homework_number": 0,
       "llm": "Gpt"
    },
@@ -5023,6 +5121,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Rohan Gulati",
       "homework_number": 2,
       "llm": "Kimi"
    },
@@ -5075,6 +5174,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Fangzhou Zhao",
       "homework_number": 11,
       "llm": "Gpt"
    },
@@ -5127,6 +5227,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Sammie Smith",
       "homework_number": 8,
       "llm": "Gpt"
    },
@@ -5179,6 +5280,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Qicheng Zhu",
       "homework_number": 11,
       "llm": "Kimi"
    },
@@ -5231,6 +5333,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Dagny Streit",
       "homework_number": 8,
       "llm": "Gpt"
    },
@@ -5283,6 +5386,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Ayush Goel",
       "homework_number": 0,
       "llm": "Gemini"
    },
@@ -5335,6 +5439,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Xueli Sun",
       "homework_number": -1,
       "llm": "Deepseek"
    },
@@ -5387,6 +5492,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Kelvin Li",
       "homework_number": 10,
       "llm": "Deepseek"
    },
@@ -5439,6 +5545,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Justin Li",
       "homework_number": 8,
       "llm": "Deepseek"
    },
@@ -5491,6 +5598,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Fantine Mpacko Priso",
       "homework_number": 10,
       "llm": "Mistral"
    },
@@ -5543,6 +5651,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Elizabeth Polito",
       "homework_number": 4,
       "llm": "Grok"
    },
@@ -5595,6 +5704,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "John Chang",
       "homework_number": 10,
       "llm": "Gpt"
    },
@@ -5647,6 +5757,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Lenci Ni",
       "homework_number": 9,
       "llm": "Gpt"
    },
@@ -5699,6 +5810,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Vongani Maluleke",
       "homework_number": 7,
       "llm": "Claude"
    },
@@ -5751,6 +5863,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Imra Dawoodani",
       "homework_number": 10,
       "llm": "Gemini"
    },
@@ -5803,6 +5916,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Xuanlin Mao",
       "homework_number": 11,
       "llm": "Gemini"
    },
@@ -5855,6 +5969,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Nils Selte",
       "homework_number": 8,
       "llm": "Kimi"
    },
@@ -5907,6 +6022,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Krish Yadav",
       "homework_number": 8,
       "llm": "Grok"
    },
@@ -5959,6 +6075,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Zach Pricz",
       "homework_number": 4,
       "llm": "Qwen"
    },
@@ -6011,6 +6128,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "ZhaoRui Qu",
       "homework_number": 0,
       "llm": "Kimi"
    },
@@ -6063,6 +6181,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Gabriel Han",
       "homework_number": 12,
       "llm": "Gemini"
    },
@@ -6115,6 +6234,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Tamzid Razzaque",
       "homework_number": 9,
       "llm": "Gpt"
    },
@@ -6167,6 +6287,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Gustavo Jose Ortiz Zepeda",
       "homework_number": 2,
       "llm": "Gemini"
    },
@@ -6219,6 +6340,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Tin Yau",
       "homework_number": 8,
       "llm": "Gemini"
    },
@@ -6271,6 +6393,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Ijin Yu",
       "homework_number": 2,
       "llm": "Gemini"
    },
@@ -6323,6 +6446,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Ishir Garg",
       "homework_number": 12,
       "llm": "Claude"
    },
@@ -6375,6 +6499,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Etaash Patel",
       "homework_number": 9,
       "llm": "Gemma"
    },
@@ -6427,6 +6552,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Vrushank Prakash",
       "homework_number": 7,
       "llm": "Gemini"
    },
@@ -6479,6 +6605,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Minjune Kim",
       "homework_number": 1,
       "llm": "Mistral"
    },
@@ -6531,6 +6658,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Kian Hekmatnejad",
       "homework_number": 5,
       "llm": "Mistral"
    },
@@ -6583,6 +6711,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Ruihan Xia",
       "homework_number": 7,
       "llm": "Qwen"
    },
@@ -6635,6 +6764,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Aaryan Chandna",
       "homework_number": 11,
       "llm": "Gemini"
    },
@@ -6687,6 +6817,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Hanyang Gu",
       "homework_number": 1,
       "llm": "Kimi"
    },
@@ -6739,6 +6870,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Alex Cao",
       "homework_number": 9,
       "llm": "Deepseek"
    },
@@ -6791,6 +6923,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Divya Ramesh",
       "homework_number": 9,
       "llm": "Gemini"
    },
@@ -6812,7 +6945,7 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 58,
+      "view_count": 59,
       "unique_view_count": 30,
       "vote_count": 0,
       "reply_count": 0,
@@ -6830,7 +6963,7 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-11-29T12:21:31.421792+11:00",
-      "updated_at": "2025-12-18T18:16:11.794082+11:00",
+      "updated_at": "2025-12-20T10:09:46.026836+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
@@ -6843,6 +6976,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jason Trinh",
       "homework_number": 0,
       "llm": "Gemini"
    },
@@ -6895,6 +7029,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Shervin Goudarzi",
       "homework_number": 9,
       "llm": "Gemini"
    },
@@ -6947,6 +7082,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Zesheng Cai",
       "homework_number": 8,
       "llm": "Deepseek"
    },
@@ -6999,8 +7135,62 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Ken Zheng",
       "homework_number": 2,
       "llm": "Deepseek"
+   },
+   {
+      "id": 7369656,
+      "user_id": 647739,
+      "course_id": 84647,
+      "original_id": null,
+      "editor_id": 647739,
+      "accepted_id": null,
+      "duplicate_id": null,
+      "number": 334,
+      "type": "question",
+      "title": "Special Participation A: Gemini 3 (Thinking) on HW 8",
+      "content": "<document version=\"2.0\"><paragraph>For this assignment, I used Gemini to tackle the non-coding/theory portions of Homework 8. Beyond simply checking if the model could solve the math, I wanted to investigate whether crafting an \"ideal\" prompt for learning is actually worth the effort.</paragraph><file url=\"https://static.us.edusercontent.com/files/YCdIAj8sDYvhpEEZuWMayegS\" filename=\"lazy.pdf\"/><file url=\"https://static.us.edusercontent.com/files/R6NBvAUeRjhLUhKIzrmIo41y\" filename=\"sophisticated.pdf\"/><paragraph>I ran an A/B test using two distinct prompts: a \"Lazy\" prompt (minimal instruction) and a \"Rigorous\" prompt (detailed constraints, persona setting, and formatting rules).</paragraph><paragraph><bold>My conclusion:</bold> Attempting to engineer the perfect pedagogical prompt often yields diminishing returns. Unless your prompt is extremely specific and detailed, you will likely waste more time trying to \"program\" the AI to teach you than you would by simply struggling through the problem yourself. While my sophisticated prompt was significantly more detailed than the lazy one, I couldn't find a strong justification for the extra setup time. The model's raw training on these standard theoretical derivations is robust enough that \"lazy\" prompting yields nearly identical results.</paragraph><paragraph><italic>Disclaimer: This interaction was not conducted in \"Study Mode,\" I have not tested/used this mode in the past so i cannot speak to the abilities in this regard.</italic> </paragraph></document>",
+      "document": "For this assignment, I used Gemini to tackle the non-coding/theory portions of Homework 8. Beyond simply checking if the model could solve the math, I wanted to investigate whether crafting an \"ideal\" prompt for learning is actually worth the effort.\n\nI ran an A/B test using two distinct prompts: a \"Lazy\" prompt (minimal instruction) and a \"Rigorous\" prompt (detailed constraints, persona setting, and formatting rules).\n\nMy conclusion: Attempting to engineer the perfect pedagogical prompt often yields diminishing returns. Unless your prompt is extremely specific and detailed, you will likely waste more time trying to \"program\" the AI to teach you than you would by simply struggling through the problem yourself. While my sophisticated prompt was significantly more detailed than the lazy one, I couldn't find a strong justification for the extra setup time. The model's raw training on these standard theoretical derivations is robust enough that \"lazy\" prompting yields nearly identical results.\n\nDisclaimer: This interaction was not conducted in \"Study Mode,\" I have not tested/used this mode in the past so i cannot speak to the abilities in this regard. ",
+      "category": "Curiosity",
+      "subcategory": "",
+      "subsubcategory": "",
+      "flag_count": 0,
+      "star_count": 0,
+      "view_count": 152,
+      "unique_view_count": 80,
+      "vote_count": 0,
+      "reply_count": 0,
+      "unresolved_count": 0,
+      "is_locked": false,
+      "is_pinned": false,
+      "is_private": false,
+      "is_endorsed": false,
+      "is_answered": false,
+      "is_student_answered": false,
+      "is_staff_answered": false,
+      "is_archived": false,
+      "is_anonymous": false,
+      "is_megathread": false,
+      "anonymous_comments": false,
+      "approved_status": "approved",
+      "created_at": "2025-11-27T11:33:04.796778+11:00",
+      "updated_at": "2025-12-19T18:44:14.865702+11:00",
+      "deleted_at": null,
+      "pinned_at": null,
+      "anonymous_id": 0,
+      "vote": 0,
+      "is_seen": false,
+      "is_starred": false,
+      "is_watched": null,
+      "glanced_at": null,
+      "new_reply_count": 0,
+      "duplicate_title": null,
+      "answers": [],
+      "comments": [],
+      "user_name": "Andrew Choy",
+      "homework_number": 8,
+      "llm": "Gemini"
    },
    {
       "id": 7358125,
@@ -7051,6 +7241,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jaimyn Drake",
       "homework_number": 9,
       "llm": "Grok"
    },
@@ -7103,6 +7294,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Nicolas Rault-Wang",
       "homework_number": 6,
       "llm": "Gemini"
    },
@@ -7155,6 +7347,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Nyx Iskandar",
       "homework_number": 4,
       "llm": "Gpt"
    },
@@ -7207,6 +7400,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "E Harrison",
       "homework_number": 3,
       "llm": "Claude"
    },
@@ -7259,6 +7453,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Kabir Shah",
       "homework_number": 5,
       "llm": "Kimi"
    },
@@ -7311,6 +7506,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Hanna Roed",
       "homework_number": 8,
       "llm": "Qwen"
    },
@@ -7363,6 +7559,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Angelina Zhang",
       "homework_number": 6,
       "llm": "Deepseek"
    },
@@ -7384,7 +7581,7 @@
       "subsubcategory": "",
       "flag_count": 0,
       "star_count": 0,
-      "view_count": 184,
+      "view_count": 185,
       "unique_view_count": 96,
       "vote_count": 0,
       "reply_count": 2,
@@ -7402,7 +7599,7 @@
       "anonymous_comments": false,
       "approved_status": "approved",
       "created_at": "2025-11-14T12:56:44.53714+11:00",
-      "updated_at": "2025-12-18T18:14:56.2485+11:00",
+      "updated_at": "2025-12-20T10:24:05.792973+11:00",
       "deleted_at": null,
       "pinned_at": null,
       "anonymous_id": 0,
@@ -7410,7 +7607,7 @@
       "is_seen": true,
       "is_starred": false,
       "is_watched": null,
-      "glanced_at": "2025-11-17T09:19:23.00451+11:00",
+      "glanced_at": "2025-12-20T10:24:05.794947+11:00",
       "new_reply_count": 0,
       "duplicate_title": null,
       "answers": [],
@@ -7466,11 +7663,14 @@
                   "deleted_at": null,
                   "anonymous_id": 0,
                   "vote": 0,
-                  "comments": []
+                  "comments": [],
+                  "user_name": "Tianqu He"
                }
-            ]
+            ],
+            "user_name": "Anant Sahai"
          }
       ],
+      "user_name": "Tianqu He",
       "homework_number": 0,
       "llm": "Mistral"
    },
@@ -7523,6 +7723,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Oliver Chen",
       "homework_number": 9,
       "llm": "Qwen"
    },
@@ -7575,6 +7776,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Kithmini Herath",
       "homework_number": 5,
       "llm": "Gemini"
    },
@@ -7627,6 +7829,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jameson Liu",
       "homework_number": 6,
       "llm": "Gpt"
    },
@@ -7679,6 +7882,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Yaqi Su",
       "homework_number": 2,
       "llm": "Claude"
    },
@@ -7731,6 +7935,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Xi Cheng",
       "homework_number": 2,
       "llm": "Mistral"
    },
@@ -7783,6 +7988,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jason Guo",
       "homework_number": 4,
       "llm": "Gemini"
    },
@@ -7835,6 +8041,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Alex Luu",
       "homework_number": 6,
       "llm": "Gpt"
    },
@@ -7887,6 +8094,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Shashwat Bansal",
       "homework_number": 0,
       "llm": "Llama"
    },
@@ -7964,9 +8172,11 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Vijay Kethanaboyina"
          }
       ],
+      "user_name": "Vijay Kethanaboyina",
       "homework_number": 7,
       "llm": "Kimi"
    },
@@ -8019,6 +8229,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Ender Ji",
       "homework_number": 7,
       "llm": "Grok"
    },
@@ -8071,6 +8282,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Heidy Hernandez Juan",
       "homework_number": 6,
       "llm": "Mistral"
    },
@@ -8174,11 +8386,14 @@
                   "deleted_at": null,
                   "anonymous_id": 0,
                   "vote": 0,
-                  "comments": []
+                  "comments": [],
+                  "user_name": "Ben Yu"
                }
-            ]
+            ],
+            "user_name": "Anant Sahai"
          }
       ],
+      "user_name": "Ben Yu",
       "homework_number": 3,
       "llm": "Gemini"
    },
@@ -8231,6 +8446,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Faiaz Khan",
       "homework_number": 7,
       "llm": "Gpt"
    },
@@ -8283,6 +8499,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Ruizhe Song",
       "homework_number": 2,
       "llm": "Gemini"
    },
@@ -8335,6 +8552,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Yuxiang Liu",
       "homework_number": 5,
       "llm": "Claude"
    },
@@ -8387,6 +8605,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Zhuangzhe Wu",
       "homework_number": 3,
       "llm": "Deepseek"
    },
@@ -8439,6 +8658,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Junya Tsuneishi",
       "homework_number": 1,
       "llm": "Gpt"
    },
@@ -8515,10 +8735,12 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Anant Sahai"
          }
       ],
       "comments": [],
+      "user_name": "Mehul Jaiswal",
       "homework_number": 5,
       "llm": "Gpt"
    },
@@ -8571,6 +8793,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jeffrey Cheng",
       "homework_number": 3,
       "llm": "Mistral"
    },
@@ -8623,6 +8846,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Jerry Xiao",
       "homework_number": 5,
       "llm": "Deepseek"
    },
@@ -8675,6 +8899,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Tianyu Gu",
       "homework_number": 0,
       "llm": "Grok"
    },
@@ -8727,6 +8952,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Noah Lund Syrdal",
       "homework_number": 5,
       "llm": "Gpt"
    },
@@ -8779,6 +9005,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Anders Vestrum",
       "homework_number": 5,
       "llm": "Grok"
    },
@@ -8831,6 +9058,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Srikar Babu Gadipudi",
       "homework_number": 4,
       "llm": "Deepseek"
    },
@@ -8883,6 +9111,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Iana Lin",
       "homework_number": 3,
       "llm": "Gpt"
    },
@@ -8986,11 +9215,14 @@
                   "deleted_at": null,
                   "anonymous_id": 0,
                   "vote": 0,
-                  "comments": []
+                  "comments": [],
+                  "user_name": "Tianhao Qian"
                }
-            ]
+            ],
+            "user_name": "Anant Sahai"
          }
       ],
+      "user_name": "Tianhao Qian",
       "homework_number": 1,
       "llm": "Deepseek"
    },
@@ -9068,9 +9300,11 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Anant Sahai"
          }
       ],
+      "user_name": "Zhangzhi 'csrookie' Xiong",
       "homework_number": 0,
       "llm": "Gemini"
    },
@@ -9123,6 +9357,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Andy Zhang",
       "homework_number": 0,
       "llm": "Qwen"
    },
@@ -9200,7 +9435,8 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Deena Sun"
          },
          {
             "id": 16480725,
@@ -9227,7 +9463,8 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Deena Sun"
          },
          {
             "id": 16480735,
@@ -9254,7 +9491,8 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Deena Sun"
          },
          {
             "id": 16480774,
@@ -9281,9 +9519,11 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Deena Sun"
          }
       ],
+      "user_name": "Deena Sun",
       "homework_number": 3,
       "llm": "Kimi"
    },
@@ -9361,9 +9601,11 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Anant Sahai"
          }
       ],
+      "user_name": "Wesley Kai Zheng",
       "homework_number": 0,
       "llm": "Deepseek"
    },
@@ -9441,9 +9683,11 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Anant Sahai"
          }
       ],
+      "user_name": "Bruno Vieira",
       "homework_number": 3,
       "llm": "Grok"
    },
@@ -9496,6 +9740,7 @@
       "duplicate_title": null,
       "answers": [],
       "comments": [],
+      "user_name": "Joe Berry",
       "homework_number": 1,
       "llm": "Claude"
    },
@@ -9573,9 +9818,11 @@
             "deleted_at": null,
             "anonymous_id": 0,
             "vote": 0,
-            "comments": []
+            "comments": [],
+            "user_name": "Anant Sahai"
          }
       ],
+      "user_name": "Leon Kornfeld",
       "homework_number": 2,
       "llm": "Grok"
    }

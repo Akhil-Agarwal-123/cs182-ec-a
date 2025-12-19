@@ -289,6 +289,9 @@ const AccordionPost = ({ post }) => {
   const theme = getModelTheme(post.llm);
   const primaryColor = theme.barFill;
 
+  // Construct EdStem URL
+  const edUrl = `https://edstem.org/us/courses/${post.course_id}/discussion/${post.id}`;
+
   return (
     <div
       className="relative bg-white rounded-xl transition-all duration-200 shadow-sm overflow-hidden"
@@ -305,20 +308,20 @@ const AccordionPost = ({ post }) => {
         }}
       />
 
-      <button
+      {/* Changed from <button> to <div> to allow nesting the <a> tag.
+        added cursor-pointer to mimic button behavior.
+      */}
+      <div
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-slate-100 w-full pl-5 pr-4 py-3 flex items-start justify-between text-left hover:bg-slate-200 transition-colors outline-none focus:outline-none select-none border-none"
-        style={{
-            // borderWidth: 0
-        }}
+        className="bg-slate-100 w-full pl-5 pr-3 py-3 flex items-start justify-between text-left hover:bg-slate-200 transition-colors cursor-pointer select-none"
       >
-        <div className="flex-1 pr-4">
+        <div className="flex-1 pr-2">
           <div className="flex items-center gap-2 mb-1.5">
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-200 border border-slate-300 px-1.5 py-0.5 rounded">
               HW {post.homework_number === -1 ? '?' : post.homework_number}
             </span>
             <span className="text-[10px] font-mono text-slate-500">
-              User: {post.user_id}
+              Author: {post.user_name}
             </span>
           </div>
 
@@ -330,13 +333,28 @@ const AccordionPost = ({ post }) => {
           </h4>
         </div>
 
-        <div className={`mt-1 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
-          <ChevronDown className="w-5 h-5" />
+        <div className="flex flex-col items-center gap-2">
+           {/* Ed Button - Uses stopPropagation to prevent toggling the accordion */}
+           <a
+            href={edUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-100 rounded-md transition-all"
+            title="Open in Ed"
+          >
+            <ExternalLink className="w-4 h-4" />
+          </a>
+
+          {/* Chevron Indicator */}
+          <div className={`text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
+            <ChevronDown className="w-5 h-5" />
+          </div>
         </div>
-      </button>
+      </div>
 
       {isOpen && (
-        <div className="pl-5 pr-4 pb-4 pt-2 bg-white">
+        <div className="pl-5 pr-4 pb-4 pt-2 bg-white cursor-auto">
           <ContentRenderer xmlContent={post.content || post.document} />
         </div>
       )}
@@ -348,6 +366,9 @@ const AccordionPost = ({ post }) => {
 const PostCard = ({ post }) => {
   const [expanded, setExpanded] = useState(false);
   const theme = getModelTheme(post.llm);
+
+  // Construct EdStem URL
+  const edUrl = `https://edstem.org/us/courses/${post.course_id}/discussion/${post.id}`;
 
   return (
     <Card className="hover:shadow-md transition-shadow duration-200 group relative">
@@ -361,6 +382,17 @@ const PostCard = ({ post }) => {
             </span>
             <Badge theme={theme}>{post.llm}</Badge>
           </div>
+
+          {/* Ed Link Button */}
+          <a
+            href={edUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors px-2 py-1 rounded-md hover:bg-slate-50"
+          >
+            Open in Ed
+            <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
 
         <h3 className="text-lg font-bold text-slate-900 mb-3 leading-tight group-hover:text-blue-700 transition-colors">
@@ -376,7 +408,7 @@ const PostCard = ({ post }) => {
 
         <button
           onClick={() => setExpanded(!expanded)}
-          className="mt-4 flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors w-full justify-center py-2 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-100"
+          className="mt-4 flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors w-full justify-center py-2 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-100 focus:outline-none select-none"
         >
           {expanded ? (
             <>Show Less <ChevronUp className="w-4 h-4" /></>
@@ -475,7 +507,7 @@ export default function App() {
               <div className="bg-blue-600 text-white p-1.5 rounded-lg shadow-sm">
                 <BookOpen className="w-5 h-5" />
               </div>
-              <span className="text-xl font-bold text-slate-900 tracking-tight">Ed Analyzer</span>
+              <span className="text-xl font-bold text-slate-900 tracking-tight">Special Participation Analyzer</span>
             </div>
 
             <div className="flex items-center gap-1">
@@ -490,8 +522,8 @@ export default function App() {
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-2 ${
                     activeTab === tab.id
                       ? 'bg-slate-100 text-blue-700 shadow-sm ring-1 ring-slate-200'
-                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
+                      : 'text-slate-500 bg-slate-50 hover:text-slate-900 hover:bg-slate-50'
+                  } focus:outline-none select-none`}
                 >
                   <tab.icon className="w-4 h-4" />
                   {tab.label}
@@ -540,8 +572,8 @@ export default function App() {
                                   disabled={count === 0}
                                   className={`w-full h-full py-2 rounded transition-all text-center font-medium ${
                                     count === 0
-                                      ? 'text-slate-300 cursor-default'
-                                      : `${theme.badgeBg} ${theme.badgeText} hover:shadow-sm cursor-pointer`
+                                      ? 'bg-gray-800 text-slate-300 cursor-default'
+                                      : `${theme.badgeBg} ${theme.badgeText} hover:shadow-sm cursor-pointer focus:outline-none select-none`
                                   }`}
                                 >
                                   {count > 0 ? count : '-'}
@@ -619,7 +651,7 @@ export default function App() {
                       onClick={() => setFeedHw('All')}
                       className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-colors ${
                         feedHw === 'All' ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
-                      }`}
+                      } focus:outline-none select-none`}
                     >
                       All
                     </button>
@@ -629,7 +661,7 @@ export default function App() {
                         onClick={() => setFeedHw(hw.toString() === feedHw ? 'All' : hw.toString())}
                         className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-colors ${
                           feedHw === hw.toString() ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
-                        }`}
+                        } focus:outline-none select-none`}
                       >
                         {hw === -1 ? 'Unknown' : `HW ${hw}`}
                       </button>
@@ -645,7 +677,7 @@ export default function App() {
                       onClick={() => setFeedLlm('All')}
                       className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-colors ${
                         feedLlm === 'All' ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
-                      }`}
+                      } focus:outline-none select-none`}
                     >
                       All
                     </button>
@@ -660,7 +692,7 @@ export default function App() {
                             isSelected
                               ? `${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder} ring-1 ring-${theme.name}-400`
                               : `bg-white text-slate-600 border-slate-200 hover:border-slate-300 ${theme.hover}`
-                          }`}
+                          } focus:outline-none select-none`}
                         >
                           {llm}
                         </button>
