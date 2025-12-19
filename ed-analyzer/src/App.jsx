@@ -24,17 +24,17 @@ import {
   Plus
 } from 'lucide-react';
 
-// Import your data
+// Import local data
 import rawData from './data/posts.json';
 
-// --- Theme & Color Logic ---
+/* -------------------------------------------------------------------------- */
+/* Theme Logic                                 */
+/* -------------------------------------------------------------------------- */
 
 const getModelTheme = (modelName) => {
   const normalized = modelName ? modelName.toLowerCase() : '';
 
-  // --- Greens & Teals ---
-
-  // GPT -> Emerald (Green)
+  // Greens & Teals (GPT, Gemma)
   if (normalized.includes('gpt')) return {
     name: 'emerald',
     badgeBg: 'bg-emerald-50',
@@ -45,8 +45,6 @@ const getModelTheme = (modelName) => {
     barFill: '#10b981',
     hover: 'hover:bg-emerald-50 hover:border-emerald-300'
   };
-
-  // Gemma -> Teal
   if (normalized.includes('gemma')) return {
     name: 'teal',
     badgeBg: 'bg-teal-50',
@@ -58,9 +56,7 @@ const getModelTheme = (modelName) => {
     hover: 'hover:bg-teal-50 hover:border-teal-300'
   };
 
-  // --- Blues ---
-
-  // Gemini -> Blue (Standard Google Blue)
+  // Blues (Gemini, Llama, Perplexity, Deepseek)
   if (normalized.includes('gemini')) return {
     name: 'blue',
     badgeBg: 'bg-blue-50',
@@ -71,8 +67,6 @@ const getModelTheme = (modelName) => {
     barFill: '#3b82f6',
     hover: 'hover:bg-blue-50 hover:border-blue-300'
   };
-
-  // Llama -> Sky (Light Blue)
   if (normalized.includes('llama')) return {
     name: 'sky',
     badgeBg: 'bg-sky-50',
@@ -83,8 +77,6 @@ const getModelTheme = (modelName) => {
     barFill: '#0ea5e9',
     hover: 'hover:bg-sky-50 hover:border-sky-300'
   };
-
-  // Perplexity -> Cyan (Bright Blue/Green)
   if (normalized.includes('perplexity')) return {
     name: 'cyan',
     badgeBg: 'bg-cyan-50',
@@ -95,8 +87,6 @@ const getModelTheme = (modelName) => {
     barFill: '#06b6d4',
     hover: 'hover:bg-cyan-50 hover:border-cyan-300'
   };
-
-  // Deepseek -> Indigo (Deep Blue/Purple)
   if (normalized.includes('deepseek')) return {
     name: 'indigo',
     badgeBg: 'bg-indigo-50',
@@ -108,9 +98,7 @@ const getModelTheme = (modelName) => {
     hover: 'hover:bg-indigo-50 hover:border-indigo-300'
   };
 
-  // --- Purples & Pinks ---
-
-  // Qwen -> Violet
+  // Purples & Pinks (Qwen, Mistral)
   if (normalized.includes('qwen')) return {
     name: 'violet',
     badgeBg: 'bg-violet-50',
@@ -121,8 +109,6 @@ const getModelTheme = (modelName) => {
     barFill: '#8b5cf6',
     hover: 'hover:bg-violet-50 hover:border-violet-300'
   };
-
-  // Mistral -> Fuchsia (Pink/Purple)
   if (normalized.includes('mistral')) return {
     name: 'fuchsia',
     badgeBg: 'bg-fuchsia-50',
@@ -134,9 +120,7 @@ const getModelTheme = (modelName) => {
     hover: 'hover:bg-fuchsia-50 hover:border-fuchsia-300'
   };
 
-  // --- Warm Colors ---
-
-  // Claude -> Amber (Orange-ish)
+  // Warm Colors (Claude, Kimi)
   if (normalized.includes('claude')) return {
     name: 'amber',
     badgeBg: 'bg-amber-50',
@@ -147,8 +131,6 @@ const getModelTheme = (modelName) => {
     barFill: '#f59e0b',
     hover: 'hover:bg-amber-50 hover:border-amber-300'
   };
-
-  // Kimi -> Rose (Red/Pink)
   if (normalized.includes('kimi')) return {
     name: 'rose',
     badgeBg: 'bg-rose-50',
@@ -160,12 +142,10 @@ const getModelTheme = (modelName) => {
     hover: 'hover:bg-rose-50 hover:border-rose-300'
   };
 
-  // --- Grays ---
-
-  // Grok -> Slate (Dark Gray)
+  // Grays (Grok)
   if (normalized.includes('grok')) return {
     name: 'slate',
-    badgeBg: 'bg-slate-100', // Slightly darker bg for gray theme
+    badgeBg: 'bg-slate-100',
     badgeText: 'text-slate-800',
     badgeBorder: 'border-slate-300',
     borderTop: 'border-slate-600',
@@ -174,7 +154,7 @@ const getModelTheme = (modelName) => {
     hover: 'hover:bg-slate-200 hover:border-slate-400'
   };
 
-  // Default/Fallback
+  // Fallback
   return {
     name: 'slate',
     badgeBg: 'bg-slate-100',
@@ -187,7 +167,9 @@ const getModelTheme = (modelName) => {
   };
 };
 
-// --- Helper Components ---
+/* -------------------------------------------------------------------------- */
+/* Helper Components                               */
+/* -------------------------------------------------------------------------- */
 
 const Card = ({ children, className = "" }) => (
   <div className={`bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden ${className}`}>
@@ -195,20 +177,24 @@ const Card = ({ children, className = "" }) => (
   </div>
 );
 
-const Badge = ({ children, theme }) => {
-  return (
-    <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder}`}>
-      {children}
-    </span>
-  );
-};
+const Badge = ({ children, theme }) => (
+  <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder}`}>
+    {children}
+  </span>
+);
 
-// --- Content Parsing Logic ---
+/* -------------------------------------------------------------------------- */
+/* Content Parsing                                 */
+/* -------------------------------------------------------------------------- */
 
+/**
+ * Parses XML-formatted strings from the LLM output.
+ * Handles custom tags for files, formatting, and attachments.
+ */
 const ContentRenderer = ({ xmlContent }) => {
   if (!xmlContent) return null;
 
-  // 1. Extract Files/PDFs
+  // Extract Files/PDFs
   const fileRegex = /<file url="([^"]+)"\s*(?:filename="([^"]+)")?\s*\/>/g;
   const files = [];
   let fileMatch;
@@ -216,9 +202,9 @@ const ContentRenderer = ({ xmlContent }) => {
     files.push({ url: fileMatch[1], name: fileMatch[2] || 'Document' });
   }
 
-  // 2. Formatting Transformations
+  // Transform XML tags to HTML
   let formattedText = xmlContent
-    .replace(/<file[^>]*\/>/g, '') // Remove file tags
+    .replace(/<file[^>]*\/>/g, '')
     .replace(/<paragraph>/g, '<p class="mb-3 leading-relaxed">')
     .replace(/<\/paragraph>/g, '</p>')
     .replace(/<break\/>/g, '<br/>')
@@ -242,13 +228,14 @@ const ContentRenderer = ({ xmlContent }) => {
     <div className="text-slate-800 text-sm font-sans">
       <div dangerouslySetInnerHTML={{ __html: formattedText }} />
 
+      {/* Attachment Preview Section */}
       {files.length > 0 && (
         <div className="mt-4 space-y-3">
           <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Attachments</div>
           <div className="grid grid-cols-1 gap-4">
             {files.map((file, idx) => {
               const isPdf = file.name.toLowerCase().endsWith('.pdf') || file.url.toLowerCase().includes('.pdf');
-              // Use Google Docs Viewer for PDFs to prevent auto-download
+              // Use Google Docs Viewer for PDF preview
               const viewerUrl = isPdf
                 ? `https://docs.google.com/gview?url=${encodeURIComponent(file.url)}&embedded=true`
                 : file.url;
@@ -288,28 +275,25 @@ const ContentRenderer = ({ xmlContent }) => {
   );
 };
 
-// --- Post Components ---
+/* -------------------------------------------------------------------------- */
+/* Post Components                                 */
+/* -------------------------------------------------------------------------- */
 
-// This is the box used in the Analysis Columns
+// Compact accordion style for the columnar analysis view
 const AccordionPost = ({ post }) => {
   const [isOpen, setIsOpen] = useState(false);
   const theme = getModelTheme(post.llm);
-
-  // Use the specific hex color from your palette to guarantee it renders
   const primaryColor = theme.barFill;
 
   return (
     <div
       className="relative bg-white rounded-xl overflow-hidden transition-all duration-200 shadow-sm border"
       style={{
-        // Force the border to be the theme color (or slightly transparent version if you prefer)
-        // This fixes the "slate" issue by ignoring Tailwind class purging limits
         borderColor: primaryColor,
-        // Optional: Add a subtle glow when open if you like, otherwise remove boxShadow
         boxShadow: isOpen ? `0 0 0 1px ${primaryColor}` : undefined
       }}
     >
-      {/* Accent Strip: w-1 to match PostCard thickness */}
+      {/* Decorative accent strip */}
       <div
         className="absolute left-0 top-0 bottom-0 w-1"
         style={{ backgroundColor: primaryColor }}
@@ -321,32 +305,27 @@ const AccordionPost = ({ post }) => {
       >
         <div className="flex-1 pr-4">
           <div className="flex items-center gap-2 mb-1.5">
-            {/* HW Badge */}
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">
               HW {post.homework_number === -1 ? '?' : post.homework_number}
             </span>
-            {/* User ID */}
             <span className="text-[10px] font-mono text-slate-400">
               User: {post.user_id}
             </span>
           </div>
 
-          {/* Post Title: Force color with style prop */}
           <h4
             className="text-sm font-bold leading-tight"
-            style={{ color: primaryColor }} // Keeps the title colored like the border
+            style={{ color: primaryColor }}
           >
             {post.title}
           </h4>
         </div>
 
-        {/* Chevron Icon */}
         <div className={`mt-1 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
           <ChevronDown className="w-5 h-5" />
         </div>
       </button>
 
-      {/* Expanded Content Area */}
       {isOpen && (
         <div className="pl-5 pr-4 pb-4 pt-2 border-t border-slate-100 bg-white">
           <ContentRenderer xmlContent={post.content || post.document} />
@@ -356,13 +335,13 @@ const AccordionPost = ({ post }) => {
   );
 };
 
+// Standard card style for the main feed view
 const PostCard = ({ post }) => {
   const [expanded, setExpanded] = useState(false);
   const theme = getModelTheme(post.llm);
 
   return (
     <Card className="hover:shadow-md transition-shadow duration-200 group relative">
-      {/* Decorative colored strip on left using border logic */}
       <div className={`absolute left-0 top-0 bottom-0 w-1 ${theme.badgeBg.replace('50', '500')}`} />
 
       <div className="p-5 pl-7">
@@ -401,25 +380,29 @@ const PostCard = ({ post }) => {
   );
 };
 
-// --- Main Application ---
+/* -------------------------------------------------------------------------- */
+/* Main Application                                */
+/* -------------------------------------------------------------------------- */
 
 export default function App() {
+  // Navigation State
   const [activeTab, setActiveTab] = useState('analysis');
+
+  // Feed State
   const [feedHw, setFeedHw] = useState('All');
   const [feedLlm, setFeedLlm] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Analysis Tab State
+  // Analysis State
   const [analysisColumns, setAnalysisColumns] = useState(['Gpt', 'Claude']);
   const [analysisHwFilter, setAnalysisHwFilter] = useState('All');
 
-  // 1. Data Processing
+  // Process data for charts and matrices
   const processedData = useMemo(() => {
     const homeworks = [...new Set(rawData.map(p => p.homework_number))].sort((a, b) => a - b);
     const llms = [...new Set(rawData.map(p => p.llm))].filter(Boolean).sort();
 
     const pivotData = homeworks.map(hw => {
-      // CHECK FOR -1 HERE in the name property
       const row = {
         name: hw === -1 ? 'Unknown' : `HW ${hw}`,
         total: 0,
@@ -442,7 +425,7 @@ export default function App() {
     return { homeworks, llms, pivotData, llmCounts };
   }, []);
 
-  // 2. Filter Logic for Feed
+  // Filter logic for the Feed view
   const feedPosts = useMemo(() => {
     return rawData.filter(post => {
       const matchesHw = feedHw === 'All' || post.homework_number.toString() === feedHw.toString();
@@ -475,12 +458,10 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col">
 
-      {/* Top Navbar */}
+      {/* --- Top Navigation --- */}
       <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm flex-none">
         <div className="max-w-[1600px] mx-auto px-4 md:px-8">
           <div className="flex justify-between items-center h-16">
-
-            {/* Logo */}
             <div className="flex items-center gap-3">
               <div className="bg-blue-600 text-white p-1.5 rounded-lg shadow-sm">
                 <BookOpen className="w-5 h-5" />
@@ -488,7 +469,6 @@ export default function App() {
               <span className="text-xl font-bold text-slate-900 tracking-tight">Ed Analyzer</span>
             </div>
 
-            {/* Nav Links */}
             <div className="flex items-center gap-1">
               {[
                 { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -513,13 +493,14 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Main Content Area */}
-      <div className="flex-1 overflow-hidden w-full max-w-[1600px] mx-auto p-4 md:p-6">
+      {/* --- Main Content Area --- */}
+      <div className="flex-1 flex flex-col overflow-hidden w-full max-w-[1600px] mx-auto p-4 md:p-6">
 
-        {/* VIEW: Overview (Matrix) */}
+        {/* --- View 1: Overview (Matrix & Charts) --- */}
         {activeTab === 'overview' && (
           <div className="h-full overflow-y-auto animate-in fade-in slide-in-from-bottom-2 duration-300 pb-20">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Data Matrix */}
               <Card className="lg:col-span-2 p-6">
                 <h2 className="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800">
                   <LayoutDashboard className="w-5 h-5 text-blue-500" />
@@ -549,8 +530,8 @@ export default function App() {
                                   onClick={() => count > 0 && handleCellClick(row.hwId, llm)}
                                   disabled={count === 0}
                                   className={`w-full h-full py-2 rounded transition-all text-center font-medium ${
-                                    count === 0 
-                                      ? 'text-slate-300 cursor-default' 
+                                    count === 0
+                                      ? 'text-slate-300 cursor-default'
                                       : `${theme.badgeBg} ${theme.badgeText} hover:shadow-sm cursor-pointer`
                                   }`}
                                 >
@@ -567,6 +548,7 @@ export default function App() {
                 </div>
               </Card>
 
+              {/* Total Count Chart */}
               <Card className="p-6 flex flex-col">
                 <h2 className="text-lg font-bold mb-6 text-slate-800">Total Posts by Model</h2>
                 <div className="flex-1 min-h-[300px]">
@@ -598,7 +580,7 @@ export default function App() {
           </div>
         )}
 
-        {/* VIEW: Post Feed */}
+        {/* --- View 2: Post Feed --- */}
         {activeTab === 'feed' && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-full overflow-hidden animate-in fade-in duration-300">
             {/* Sidebar Filters */}
@@ -620,7 +602,7 @@ export default function App() {
                   />
                 </div>
 
-                {/* HW Filter */}
+                {/* Homework Filter */}
                 <div className="mb-6">
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Homework</label>
                   <div className="flex flex-wrap gap-2">
@@ -640,14 +622,13 @@ export default function App() {
                           feedHw === hw.toString() ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
                         }`}
                       >
-                        {/* CHECK FOR -1 HERE */}
                         {hw === -1 ? 'Unknown' : `HW ${hw}`}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* LLM Filter */}
+                {/* Model Filter */}
                 <div>
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Model</label>
                   <div className="flex flex-wrap gap-2">
@@ -667,8 +648,8 @@ export default function App() {
                           key={llm}
                           onClick={() => setFeedLlm(isSelected ? 'All' : llm)}
                           className={`px-3 py-1.5 text-xs font-bold rounded-md border transition-all ${
-                            isSelected 
-                              ? `${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder} ring-1 ring-${theme.name}-400` 
+                            isSelected
+                              ? `${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder} ring-1 ring-${theme.name}-400`
                               : `bg-white text-slate-600 border-slate-200 hover:border-slate-300 ${theme.hover}`
                           }`}
                         >
@@ -681,9 +662,8 @@ export default function App() {
               </Card>
             </div>
 
-            {/* Feed Content */}
+            {/* Main Feed Content */}
             <div className="lg:col-span-3 h-full overflow-y-auto pb-20 pr-2">
-              {/* Feed Header */}
               <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-4">
                 <h3 className="text-sm font-medium text-slate-600">
                   Showing <span className="font-bold text-slate-900">{feedPosts.length}</span> posts
@@ -715,15 +695,13 @@ export default function App() {
           </div>
         )}
 
-        {/* VIEW: Model Analysis (Columnar) */}
-        {/* VIEW: Model Analysis (Columnar) */}
+        {/* --- View 3: Model Analysis (Columnar) --- */}
         {activeTab === 'analysis' && (
-          <div className="flex flex-col h-full w-full overflow-hidden animate-in fade-in duration-300">
+          <div className="flex flex-col h-full w-full min-w-0 overflow-hidden animate-in fade-in duration-300">
 
             {/* Analysis Controls */}
-            {/* Added min-w-0 to prevent flexbox overflow issues in the toolbar */}
             <Card className="flex-none p-4 mb-4 flex flex-wrap items-center gap-6 z-10 relative min-w-0">
-              {/* Homework Selector */}
+              {/* Homework Dropdown */}
               <div className="flex items-center gap-3">
                 <label className="text-sm font-bold text-slate-700">Homework:</label>
                 <div className="relative">
@@ -745,7 +723,7 @@ export default function App() {
 
               <div className="h-8 w-px bg-slate-200 mx-2 hidden md:block"></div>
 
-              {/* Column Selector */}
+              {/* Column Adder */}
               <div className="flex items-center gap-3 flex-1 overflow-x-auto min-w-0">
                 <label className="text-sm font-bold text-slate-700 whitespace-nowrap">Add Column:</label>
                 <div className="flex gap-2">
@@ -768,15 +746,8 @@ export default function App() {
               </div>
             </Card>
 
-            {/* SCROLL AREA FIX */}
-            {/* 1. flex-1: Fills remaining vertical height */}
-            {/* 2. w-full: Forces width to match parent (screen), stopping page expansion */}
-            {/* 3. overflow-x-auto: Enables the horizontal scrollbar */}
+            {/* Horizontal Scroll Container */}
             <div className="flex-1 w-full overflow-x-auto overflow-y-hidden pb-2">
-
-              {/* TRACK FIX */}
-              {/* flex: Aligns items in a row */}
-              {/* h-full: Ensures columns stretch to full height */}
               <div className="flex h-full gap-4 px-1">
 
                 {analysisColumns.length === 0 && (
@@ -788,6 +759,7 @@ export default function App() {
                   </div>
                 )}
 
+                {/* Dynamic Columns */}
                 {analysisColumns.map(llmName => {
                   const theme = getModelTheme(llmName);
                   const columnPosts = rawData.filter(p =>
@@ -796,9 +768,6 @@ export default function App() {
                   );
 
                   return (
-                    // COLUMN FIX
-                    // flex-none: STOPS shrinking. Forces the column to keep its size.
-                    // w-[400px]: Sets the constant size you wanted.
                     <div
                       key={llmName}
                       className="flex-none w-[400px] flex flex-col h-full bg-slate-50 rounded-xl border border-slate-200 overflow-hidden shadow-sm"
