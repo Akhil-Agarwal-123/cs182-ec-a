@@ -461,7 +461,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-screen bg-slate-50 text-slate-900 font-sans overflow-x-hidden ">
+    <div className="w-screen h-screen bg-slate-50 text-slate-900 font-sans overflow-x-hidden ">
 
       {/* --- Top Navigation --- */}
       <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm flex-none">
