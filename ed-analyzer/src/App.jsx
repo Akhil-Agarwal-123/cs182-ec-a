@@ -287,28 +287,33 @@ const AccordionPost = ({ post }) => {
 
   return (
     <div
-      className="relative bg-white rounded-xl overflow-hidden transition-all duration-200 shadow-sm border"
+      className="relative bg-white rounded-xl transition-all duration-200 shadow-sm overflow-hidden"
       style={{
         borderColor: primaryColor,
-        boxShadow: isOpen ? `0 0 0 1px ${primaryColor}` : undefined
+        borderWidth: `2px`
       }}
     >
       {/* Decorative accent strip */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-1"
-        style={{ backgroundColor: primaryColor }}
+        className="absolute left-0 top-0 bottom-0 w-2 overflow-hidden"
+        style={{
+            backgroundColor: primaryColor
+        }}
       />
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full pl-5 pr-4 py-3 flex items-start justify-between text-left hover:bg-slate-50 transition-colors"
+        className="bg-slate-100 w-full pl-5 pr-4 py-3 flex items-start justify-between text-left hover:bg-slate-200 transition-colors outline-none focus:outline-none select-none border-none"
+        style={{
+            // borderWidth: 0
+        }}
       >
         <div className="flex-1 pr-4">
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-200 border border-slate-300 px-1.5 py-0.5 rounded">
               HW {post.homework_number === -1 ? '?' : post.homework_number}
             </span>
-            <span className="text-[10px] font-mono text-slate-400">
+            <span className="text-[10px] font-mono text-slate-500">
               User: {post.user_id}
             </span>
           </div>
@@ -327,7 +332,7 @@ const AccordionPost = ({ post }) => {
       </button>
 
       {isOpen && (
-        <div className="pl-5 pr-4 pb-4 pt-2 border-t border-slate-100 bg-white">
+        <div className="pl-5 pr-4 pb-4 pt-2 bg-white">
           <ContentRenderer xmlContent={post.content || post.document} />
         </div>
       )}
@@ -456,11 +461,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col">
+    <div className="w-full max-w-screen min-h-screen bg-slate-50 text-slate-900 font-sans overflow-x-hidden">
 
       {/* --- Top Navigation --- */}
       <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm flex-none">
-        <div className="max-w-[1600px] mx-auto px-4 md:px-8">
+        <div className="w-full px-4 md:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
               <div className="bg-blue-600 text-white p-1.5 rounded-lg shadow-sm">
@@ -494,11 +499,11 @@ export default function App() {
       </nav>
 
       {/* --- Main Content Area --- */}
-      <div className="flex-1 flex flex-col overflow-hidden w-full max-w-[1600px] mx-auto p-4 md:p-6">
+      <div className="overflow-hidden w-full p-4 md:p-6">
 
         {/* --- View 1: Overview (Matrix & Charts) --- */}
         {activeTab === 'overview' && (
-          <div className="h-full overflow-y-auto animate-in fade-in slide-in-from-bottom-2 duration-300 pb-20">
+          <div className="w-full h-full overflow-y-auto animate-in fade-in slide-in-from-bottom-2 duration-300 pb-20">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Data Matrix */}
               <Card className="lg:col-span-2 p-6">
@@ -697,7 +702,7 @@ export default function App() {
 
         {/* --- View 3: Model Analysis (Columnar) --- */}
         {activeTab === 'analysis' && (
-          <div className="flex flex-col h-full w-full min-w-0 overflow-hidden animate-in fade-in duration-300">
+          <div className="flex flex-col h-full w-full overflow-hidden animate-in fade-in duration-300">
 
             {/* Analysis Controls */}
             <Card className="flex-none p-4 mb-4 flex flex-wrap items-center gap-6 z-10 relative min-w-0">
@@ -708,7 +713,7 @@ export default function App() {
                   <select
                     value={analysisHwFilter}
                     onChange={(e) => setAnalysisHwFilter(e.target.value)}
-                    className="appearance-none bg-slate-50 border border-slate-300 text-slate-900 text-sm font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 p-2.5 pr-8"
+                    className="appearance-none bg-slate-50 border border-slate-300 text-slate-900 text-sm font-medium rounded-lg focus:ring-blue-500 block w-48 p-2.5 pr-8 outline-none focus:outline-none select-none"
                   >
                     <option value="All">All Assignments</option>
                     {processedData.homeworks.map(hw => (
@@ -735,7 +740,7 @@ export default function App() {
                       <button
                         key={llm}
                         onClick={() => addColumn(llm)}
-                        className={`text-xs font-bold px-3 py-1.5 rounded-full border bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:shadow-sm transition-all flex items-center gap-1 ${theme.hover}`}
+                        className={`text-xs font-bold px-3 py-1.5 rounded-full border bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:shadow-sm transition-all flex items-center gap-1 ${theme.hover} focus:outline-none select-none`}
                       >
                         <Plus className="w-3 h-3" />
                         {llm}
@@ -747,20 +752,17 @@ export default function App() {
             </Card>
 
             {/* Horizontal Scroll Container */}
-            <div className="flex-1 w-full overflow-x-auto overflow-y-hidden pb-2">
-              <div className="flex h-full gap-4 px-1">
-
-                {analysisColumns.length === 0 && (
-                  <div className="w-full flex items-center justify-center bg-slate-50 rounded-xl border-2 border-dashed border-slate-300">
-                    <div className="text-center">
-                      <Maximize2 className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-500 font-medium">Select models above to compare analysis.</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Dynamic Columns */}
-                {analysisColumns.map(llmName => {
+            <div className="flex h-full overflow-x-scroll gap-4 px-1">
+              {analysisColumns.length === 0 && (
+                <div className="w-full flex items-center justify-center bg-slate-50 rounded-xl border-2 border-dashed border-slate-300">
+                <div className="text-center">
+                  <Maximize2 className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                  <p className="text-slate-500 font-medium">Select models above to compare analysis.</p>
+                </div>
+              </div>
+              )}
+              {/* Dynamic Columns */}
+              {analysisColumns.map(llmName => {
                   const theme = getModelTheme(llmName);
                   const columnPosts = rawData.filter(p =>
                     p.llm === llmName &&
@@ -773,12 +775,12 @@ export default function App() {
                       className="flex-none w-[400px] flex flex-col h-full bg-slate-50 rounded-xl border border-slate-200 overflow-hidden shadow-sm"
                     >
                       {/* Column Header */}
-                      <div className={`p-4 bg-white border-b border-slate-100 border-t-4 ${theme.borderTop}`}>
+                      <div className={`p-4 bg-slate-100 border-b border-t-4 ${theme.borderTop}`}>
                         <div className="flex justify-between items-start mb-1">
                           <h3 className={`text-lg font-black ${theme.titleText} uppercase tracking-wide`}>{llmName}</h3>
                           <button
                             onClick={() => removeColumn(llmName)}
-                            className="text-slate-300 hover:text-red-500 transition-colors p-1"
+                            className="text-black-300 hover:text-red-500 transition-colors p-1 bg-white outline-none focus:outline-none select-none border-none"
                             title="Remove Column"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -798,7 +800,7 @@ export default function App() {
                       </div>
 
                       {/* Scrollable Post List */}
-                      <div className="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
+                      <div className="p-3 space-y-3 custom-scrollbar">
                         {columnPosts.length > 0 ? (
                           columnPosts.map(post => (
                             <AccordionPost key={post.id} post={post} />
@@ -812,8 +814,7 @@ export default function App() {
                     </div>
                   );
                 })}
-              </div>
-            </div>
+          </div>
           </div>
         )}
 
