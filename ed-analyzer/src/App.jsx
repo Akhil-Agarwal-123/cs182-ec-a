@@ -477,7 +477,8 @@ const PostCard = ({ post }) => {
 
   return (
     <Card className="hover:shadow-md transition-shadow duration-200 group relative">
-      <div className={`absolute left-0 top-0 bottom-0 w-1 ${theme.badgeBg.replace('50', '500')}`} />
+      <div className={`absolute left-0 top-0 bottom-0 w-1`}
+      style={{backgroundColor: theme.barFill}}/>
 
       <div className="p-5 pl-7">
         <div className="flex justify-between items-start mb-3">
