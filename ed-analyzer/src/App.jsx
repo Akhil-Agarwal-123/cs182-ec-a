@@ -27,6 +27,7 @@ import {
 
 // Import local data
 import rawData from './data/posts.json';
+import summaryData from './data/analysis.json'
 
 /* -------------------------------------------------------------------------- */
 /* Theme Logic                                 */
@@ -484,7 +485,7 @@ const PostCard = ({ post }) => {
         <div className="flex justify-between items-start mb-3">
           <div className="flex gap-2">
             <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
-              HW {post.homework_number}
+              {post.homework_number === -1 ? "Unknown HW" : "HW " + post.homework_number.toString()}
             </span>
             <Badge theme={theme}>{post.llm}</Badge>
           </div>
@@ -548,13 +549,20 @@ export default function App() {
   // Analysis State
   const [analysisColumns, setAnalysisColumns] = useState(['Gpt', 'Claude']);
   const [analysisHwFilter, setAnalysisHwFilter] = useState('All');
-  const [expandedSummaries, setExpandedSummaries] = useState(new Set());
 
   // Process data for charts and matrices
   const processedData = useMemo(() => {
     const unknownConstant = 10000;
     const homeworks = [...new Set(rawData.map(p => (p.homework_number === -1 ? unknownConstant : p.homework_number)))].sort((a, b) => a - b).map(p => (p === unknownConstant ? -1 : p));
     const llms = [...new Set(rawData.map(p => p.llm))].filter(Boolean).sort();
+    const llmCounts = llms.map(llm => ({
+      name: llm,
+      count: rawData.filter(p => p.llm === llm).length,
+      theme: getModelTheme(llm)
+    }));
+    const mapping = Object.fromEntries(llms.map((llm, i) => [llm, llmCounts[i].count]));
+    llms.sort((a, b) => mapping[b] - mapping[a]);
+    llmCounts.sort((a,b) => b.count - a.count);
 
     const pivotData = homeworks.map(hw => {
       const row = {
@@ -570,71 +578,7 @@ export default function App() {
       return row;
     });
 
-    const llmCounts = llms.map(llm => ({
-      name: llm,
-      count: rawData.filter(p => p.llm === llm).length,
-      theme: getModelTheme(llm)
-    })).sort((a,b) => b.count - a.count);
-
-    // Aggregate strengths and weaknesses by LLM
-    const llmAnalyses = llms.map(llm => {
-      const postsWithAnalysis = rawData.filter(p => p.llm === llm && p.gemini_analysis);
-      
-      if (postsWithAnalysis.length === 0) {
-        return {
-          llm,
-          strengths: [],
-          weaknesses: [],
-          theme: getModelTheme(llm)
-        };
-      }
-
-      // Collect all strengths and weaknesses
-      const allStrengths = [];
-      const allWeaknesses = [];
-      
-      postsWithAnalysis.forEach(post => {
-        if (post.gemini_analysis.strengths) {
-          allStrengths.push(...post.gemini_analysis.strengths);
-        }
-        if (post.gemini_analysis.weaknesses) {
-          allWeaknesses.push(...post.gemini_analysis.weaknesses);
-        }
-      });
-
-      // Count frequency of each strength/weakness
-      const strengthCounts = {};
-      const weaknessCounts = {};
-      
-      allStrengths.forEach(s => {
-        strengthCounts[s] = (strengthCounts[s] || 0) + 1;
-      });
-      
-      allWeaknesses.forEach(w => {
-        weaknessCounts[w] = (weaknessCounts[w] || 0) + 1;
-      });
-
-      // Get top 5 most common strengths and weaknesses
-      const topStrengths = Object.entries(strengthCounts)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([strength, count]) => ({ text: strength, count }));
-      
-      const topWeaknesses = Object.entries(weaknessCounts)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([weakness, count]) => ({ text: weakness, count }));
-
-      return {
-        llm,
-        strengths: topStrengths,
-        weaknesses: topWeaknesses,
-        theme: getModelTheme(llm),
-        analysisCount: postsWithAnalysis.length
-      };
-    });
-
-    return { homeworks, llms, pivotData, llmCounts, llmAnalyses };
+    return { homeworks, llms, pivotData, llmCounts };
   }, []);
 
   // Filter logic for the Feed view
@@ -979,65 +923,10 @@ export default function App() {
                     (analysisHwFilter === 'All' || p.homework_number.toString() === analysisHwFilter.toString())
                   );
 
-                  // Get aggregated analysis for this LLM (filtered by homework if needed)
-                  const llmAnalysis = processedData.llmAnalyses.find(a => a.llm === llmName);
-                  let filteredAnalysis = null;
-
-                  if (llmAnalysis && analysisHwFilter !== 'All') {
-                    // Filter posts by homework for this analysis
-                    const filteredPosts = rawData.filter(p =>
-                      p.llm === llmName &&
-                      p.gemini_analysis &&
-                      p.homework_number.toString() === analysisHwFilter.toString()
-                    );
-
-                    if (filteredPosts.length > 0) {
-                      // Collect strengths and weaknesses for filtered posts
-                      const allStrengths = [];
-                      const allWeaknesses = [];
-
-                      filteredPosts.forEach(post => {
-                        if (post.gemini_analysis.strengths) {
-                          allStrengths.push(...post.gemini_analysis.strengths);
-                        }
-                        if (post.gemini_analysis.weaknesses) {
-                          allWeaknesses.push(...post.gemini_analysis.weaknesses);
-                        }
-                      });
-
-                      // Count frequency
-                      const strengthCounts = {};
-                      const weaknessCounts = {};
-
-                      allStrengths.forEach(s => {
-                        strengthCounts[s] = (strengthCounts[s] || 0) + 1;
-                      });
-
-                      allWeaknesses.forEach(w => {
-                        weaknessCounts[w] = (weaknessCounts[w] || 0) + 1;
-                      });
-
-                      // Get top 5
-                      const topStrengths = Object.entries(strengthCounts)
-                        .sort((a, b) => b[1] - a[1])
-                        .slice(0, 5)
-                        .map(([text, count]) => ({ text, count }));
-
-                      const topWeaknesses = Object.entries(weaknessCounts)
-                        .sort((a, b) => b[1] - a[1])
-                        .slice(0, 5)
-                        .map(([text, count]) => ({ text, count }));
-
-                      filteredAnalysis = {
-                        strengths: topStrengths,
-                        weaknesses: topWeaknesses,
-                        analysisCount: filteredPosts.length
-                      };
-                    }
-                  } else if (llmAnalysis && analysisHwFilter === 'All') {
-                    // Use the full analysis for "All"
-                    filteredAnalysis = llmAnalysis;
-                  }
+                  // Retrieve Summary for this LLM/HW Combo
+                  const currentSummary = (summaryData[llmName])
+                    ? summaryData[llmName][analysisHwFilter.toString()]
+                    : null;
 
                   return (
                     <div
@@ -1068,83 +957,15 @@ export default function App() {
                           </span>
                         </div>
 
-                        {/* --- Performance Summary (Collapsible) --- */}
-                        {(filteredAnalysis || columnPosts.length > 0) && (
-                          <div className="mt-2">
-                            <button
-                              onClick={() => {
-                                const summaryKey = `${llmName}-${analysisHwFilter}`;
-                                const newExpanded = new Set(expandedSummaries);
-                                if (newExpanded.has(summaryKey)) {
-                                  newExpanded.delete(summaryKey);
-                                } else {
-                                  newExpanded.add(summaryKey);
-                                }
-                                setExpandedSummaries(newExpanded);
-                              }}
-                              className="w-full flex items-center justify-between p-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 transition-colors text-left focus:outline-none select-none"
-                            >
-                              <div className="flex items-center gap-2">
-                                <Info className={`w-4 h-4 flex-shrink-0 ${theme.badgeText}`} />
-                                <span className={`text-xs font-bold ${theme.badgeText}`}>Performance Summary</span>
+                        {/* --- Performance Summary --- */}
+                        {currentSummary && (
+                           <div className={`mt-2 p-3 rounded-lg border ${theme.badgeBg} ${theme.badgeBorder} flex items-start gap-2`}>
+                              <Info className={`w-4 h-4 flex-shrink-0 mt-0.5 ${theme.badgeText}`} />
+                              <div className="text-xs text-slate-700 leading-relaxed">
+                                <span className={`font-bold block mb-1 ${theme.badgeText}`}>Performance Summary:</span>
+                                {currentSummary}
                               </div>
-                              <div className={`text-slate-400 transition-transform duration-200 ${expandedSummaries.has(`${llmName}-${analysisHwFilter}`) ? 'rotate-180' : ''}`}>
-                                <ChevronDown className="w-4 h-4" />
-                              </div>
-                            </button>
-                            {expandedSummaries.has(`${llmName}-${analysisHwFilter}`) && (
-                              <div className="mt-1 p-3 rounded-lg bg-white border border-slate-200 space-y-4 shadow-sm">
-
-                                {/* Strengths & Weaknesses */}
-                                {filteredAnalysis && (filteredAnalysis.strengths.length > 0 || filteredAnalysis.weaknesses.length > 0) && (
-                                  <div className="space-y-3">
-                                    {/* Strengths */}
-                                    {filteredAnalysis.strengths.length > 0 && (
-                                      <div>
-                                        <h4 className="text-xs font-bold text-emerald-700 uppercase tracking-wide mb-2 flex items-center gap-2">
-                                          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
-                                          Top Strengths
-                                        </h4>
-                                        <ul className="space-y-1.5">
-                                          {filteredAnalysis.strengths.map((item, idx) => (
-                                            <li key={idx} className="text-xs text-slate-700 flex items-start gap-2">
-                                              <span className="text-emerald-600 font-bold mt-0.5">+</span>
-                                              <span className="flex-1">{item.text}</span>
-                                            </li>
-                                          ))}
-                                        </ul>
-                                      </div>
-                                    )}
-
-                                    {/* Weaknesses */}
-                                    {filteredAnalysis.weaknesses.length > 0 && (
-                                      <div>
-                                        <h4 className="text-xs font-bold text-red-700 uppercase tracking-wide mb-2 flex items-center gap-2">
-                                          <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-                                          Top Weaknesses
-                                        </h4>
-                                        <ul className="space-y-1.5">
-                                          {filteredAnalysis.weaknesses.map((item, idx) => (
-                                            <li key={idx} className="text-xs text-slate-700 flex items-start gap-2">
-                                              <span className="text-red-600 font-bold mt-0.5">−</span>
-                                              <span className="flex-1">{item.text}</span>
-                                            </li>
-                                          ))}
-                                        </ul>
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-
-                                {/* Show message if no data available */}
-                                {(!filteredAnalysis || (filteredAnalysis.strengths.length === 0 && filteredAnalysis.weaknesses.length === 0)) && (
-                                  <div className="text-xs text-slate-500 italic">
-                                    No analysis data available for this selection.
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
+                           </div>
                         )}
                       </div>
 
