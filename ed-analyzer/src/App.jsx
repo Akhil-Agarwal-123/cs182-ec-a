@@ -399,6 +399,11 @@ const PostCard = ({ post }) => {
           {post.title}
         </h3>
 
+        <div className="mb-3 text-xs text-slate-500 font-medium flex items-center gap-1.5">
+          <span className="uppercase tracking-wider text-[10px] text-slate-400 font-bold">Author:</span>
+          <span className="text-slate-700">{post.user_name}</span>
+        </div>
+
         <div className={`relative ${!expanded ? 'max-h-32 overflow-hidden mask-bottom' : ''}`}>
           <ContentRenderer xmlContent={post.content || post.document} />
           {!expanded && (
@@ -473,7 +478,8 @@ export default function App() {
       const matchesLlm = feedLlm === 'All' || post.llm === feedLlm;
       const matchesSearch = searchQuery === '' ||
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (post.content && post.content.toLowerCase().includes(searchQuery.toLowerCase()));
+        (post.content && post.content.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (post.user_name && post.user_name.toLowerCase().includes(searchQuery.toLowerCase()));
 
       return matchesHw && matchesLlm && matchesSearch;
     });
@@ -649,8 +655,8 @@ export default function App() {
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setFeedHw('All')}
-                      className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-colors ${
-                        feedHw === 'All' ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
+                      className={`px-3 py-1.5 text-xs rounded-md border transition-colors ${
+                        feedHw === 'All' ? 'bg-slate-800 text-white border-slate-800 font-bold' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
                       } focus:outline-none select-none`}
                     >
                       All
@@ -659,8 +665,8 @@ export default function App() {
                       <button
                         key={hw}
                         onClick={() => setFeedHw(hw.toString() === feedHw ? 'All' : hw.toString())}
-                        className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-colors ${
-                          feedHw === hw.toString() ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
+                        className={`px-3 py-1.5 text-xs rounded-md border transition-colors ${
+                          feedHw === hw.toString() ? 'bg-blue-600 text-white border-blue-600 font-bold' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
                         } focus:outline-none select-none`}
                       >
                         {hw === -1 ? 'Unknown' : `HW ${hw}`}
@@ -675,8 +681,8 @@ export default function App() {
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setFeedLlm('All')}
-                      className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-colors ${
-                        feedLlm === 'All' ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
+                      className={`px-3 py-1.5 text-xs rounded-md border transition-colors ${
+                        feedLlm === 'All' ? 'bg-slate-800 text-white border-slate-800 font-bold' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
                       } focus:outline-none select-none`}
                     >
                       All
@@ -688,9 +694,9 @@ export default function App() {
                         <button
                           key={llm}
                           onClick={() => setFeedLlm(isSelected ? 'All' : llm)}
-                          className={`px-3 py-1.5 text-xs font-bold rounded-md border transition-all ${
+                          className={`px-3 py-1.5 text-xs rounded-md border transition-all ${
                             isSelected
-                              ? `${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder} ring-1 ring-${theme.name}-400`
+                              ? `${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder} ring-1 ring-${theme.name}-400 font-bold`
                               : `bg-white text-slate-600 border-slate-200 hover:border-slate-300 ${theme.hover}`
                           } focus:outline-none select-none`}
                         >
