@@ -1,0 +1,15 @@
+{
+  "Gpt": {
+    "All": "Hi",
+    "1": "GPT demonstrated strong understanding of the core concepts in HW1 but struggled with the optional edge-case implementation.",
+    "2": "Excellent performance on theoretical questions. The code provided was Pythonic and well-commented."
+  },
+  "Claude": {
+    "1": "Claude provided very verbose explanations. While accurate, the length made it difficult to find the specific answer key.",
+    "2": "Struggled with the mathematical proofs in Question 3, but the programming section was flawless."
+  },
+  "Gemini": {
+    "1": "Provided the most concise solution. However, it hallucinated a library function that does not exist in the standard library.",
+    "2": "Solid performance across the board. The reasoning for the algorithm selection was particularly insightful."
+  }
+}

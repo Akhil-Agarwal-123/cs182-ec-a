@@ -21,11 +21,13 @@ import {
   ExternalLink,
   Trash2,
   Maximize2,
-  Plus
+  Plus,
+  Info // Added Info icon
 } from 'lucide-react';
 
 // Import local data
 import rawData from './data/posts.json';
+import summaryData from './data/model_analysis.json';
 
 /* -------------------------------------------------------------------------- */
 /* Theme Logic                                 */
@@ -432,7 +434,7 @@ const PostCard = ({ post }) => {
 
 export default function App() {
   // Navigation State
-  const [activeTab, setActiveTab] = useState('analysis');
+  const [activeTab, setActiveTab] = useState('overview');
 
   // Feed State
   const [feedHw, setFeedHw] = useState('All');
@@ -510,9 +512,11 @@ export default function App() {
         <div className="w-full px-4 md:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
-              <div className="bg-blue-600 text-white p-1.5 rounded-lg shadow-sm">
-                <BookOpen className="w-5 h-5" />
-              </div>
+              <img
+                src="/logo.png"
+                alt="Special Participation Analyzer Logo"
+                className="w-10 h-10 object-contain rounded-lg bg-white"
+              />
               <span className="text-xl font-bold text-slate-900 tracking-tight">Special Participation Analyzer</span>
             </div>
 
@@ -811,6 +815,11 @@ export default function App() {
                     (analysisHwFilter === 'All' || p.homework_number.toString() === analysisHwFilter.toString())
                   );
 
+                  // Retrieve Summary for this LLM/HW Combo
+                  const currentSummary = (summaryData[llmName])
+                    ? summaryData[llmName][analysisHwFilter.toString()]
+                    : null;
+
                   return (
                     <div
                       key={llmName}
@@ -828,7 +837,7 @@ export default function App() {
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
-                        <div className="flex justify-between items-center text-xs">
+                        <div className="flex justify-between items-center text-xs mb-2">
                            <span className="text-slate-500 font-medium">
                               {analysisHwFilter === 'All'
                                 ? 'All Assignments'
@@ -839,6 +848,17 @@ export default function App() {
                             {columnPosts.length} Posts
                           </span>
                         </div>
+
+                        {/* --- NEW: Summary Analysis Block --- */}
+                        {currentSummary && (
+                           <div className={`mt-2 p-3 rounded-lg border ${theme.badgeBg} ${theme.badgeBorder} flex items-start gap-2`}>
+                              <Info className={`w-4 h-4 flex-shrink-0 mt-0.5 ${theme.badgeText}`} />
+                              <div className="text-xs text-slate-700 leading-relaxed">
+                                <span className={`font-bold block mb-1 ${theme.badgeText}`}>Performance Summary:</span>
+                                {currentSummary}
+                              </div>
+                           </div>
+                        )}
                       </div>
 
                       {/* Scrollable Post List */}
