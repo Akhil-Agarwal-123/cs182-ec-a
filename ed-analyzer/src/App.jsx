@@ -552,7 +552,8 @@ export default function App() {
 
   // Process data for charts and matrices
   const processedData = useMemo(() => {
-    const homeworks = [...new Set(rawData.map(p => p.homework_number))].sort((a, b) => a - b);
+    const unknownConstant = 10000;
+    const homeworks = [...new Set(rawData.map(p => (p.homework_number === -1 ? unknownConstant : p.homework_number)))].sort((a, b) => a - b).map(p => (p === unknownConstant ? -1 : p));
     const llms = [...new Set(rawData.map(p => p.llm))].filter(Boolean).sort();
 
     const pivotData = homeworks.map(hw => {
