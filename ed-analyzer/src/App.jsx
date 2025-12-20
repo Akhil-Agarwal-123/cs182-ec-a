@@ -27,7 +27,6 @@ import {
 
 // Import local data
 import rawData from './data/posts.json';
-import summaryData from './data/model_analysis.json';
 
 /* -------------------------------------------------------------------------- */
 /* Theme Logic                                 */
@@ -293,7 +292,7 @@ const AnalysisDropdown = ({ analysis }) => {
     <div className="mt-4 pt-4 border-t border-slate-200">
       <button
         onClick={() => setIsAnalysisOpen(!isAnalysisOpen)}
-        className="w-full flex items-center justify-between text-left mb-3 hover:bg-slate-50 p-2 rounded-lg transition-colors"
+        className="bg-slate-100 w-full flex items-center justify-between text-left mb-3 p-2 rounded-lg transition-colors focus:outline-none select-none"
       >
         <h5 className="text-xs font-bold uppercase tracking-wider text-blue-600 flex items-center gap-2">
           <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
@@ -978,26 +977,23 @@ export default function App() {
                     (analysisHwFilter === 'All' || p.homework_number.toString() === analysisHwFilter.toString())
                   );
 
-                  // Retrieve Summary for this LLM/HW Combo
-                  const currentSummary = summaryData?.[llmName]?.[analysisHwFilter.toString()] || null;
-                  
                   // Get aggregated analysis for this LLM (filtered by homework if needed)
                   const llmAnalysis = processedData.llmAnalyses.find(a => a.llm === llmName);
                   let filteredAnalysis = null;
-                  
+
                   if (llmAnalysis && analysisHwFilter !== 'All') {
                     // Filter posts by homework for this analysis
-                    const filteredPosts = rawData.filter(p => 
-                      p.llm === llmName && 
+                    const filteredPosts = rawData.filter(p =>
+                      p.llm === llmName &&
                       p.gemini_analysis &&
                       p.homework_number.toString() === analysisHwFilter.toString()
                     );
-                    
+
                     if (filteredPosts.length > 0) {
                       // Collect strengths and weaknesses for filtered posts
                       const allStrengths = [];
                       const allWeaknesses = [];
-                      
+
                       filteredPosts.forEach(post => {
                         if (post.gemini_analysis.strengths) {
                           allStrengths.push(...post.gemini_analysis.strengths);
@@ -1006,30 +1002,30 @@ export default function App() {
                           allWeaknesses.push(...post.gemini_analysis.weaknesses);
                         }
                       });
-                      
+
                       // Count frequency
                       const strengthCounts = {};
                       const weaknessCounts = {};
-                      
+
                       allStrengths.forEach(s => {
                         strengthCounts[s] = (strengthCounts[s] || 0) + 1;
                       });
-                      
+
                       allWeaknesses.forEach(w => {
                         weaknessCounts[w] = (weaknessCounts[w] || 0) + 1;
                       });
-                      
+
                       // Get top 5
                       const topStrengths = Object.entries(strengthCounts)
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, 5)
                         .map(([text, count]) => ({ text, count }));
-                      
+
                       const topWeaknesses = Object.entries(weaknessCounts)
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, 5)
                         .map(([text, count]) => ({ text, count }));
-                      
+
                       filteredAnalysis = {
                         strengths: topStrengths,
                         weaknesses: topWeaknesses,
@@ -1071,7 +1067,7 @@ export default function App() {
                         </div>
 
                         {/* --- Performance Summary (Collapsible) --- */}
-                        {(currentSummary || filteredAnalysis || columnPosts.length > 0) && (
+                        {(filteredAnalysis || columnPosts.length > 0) && (
                           <div className="mt-2">
                             <button
                               onClick={() => {
@@ -1084,7 +1080,7 @@ export default function App() {
                                 }
                                 setExpandedSummaries(newExpanded);
                               }}
-                              className="w-full flex items-center justify-between p-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 transition-colors text-left"
+                              className="w-full flex items-center justify-between p-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 transition-colors text-left focus:outline-none select-none"
                             >
                               <div className="flex items-center gap-2">
                                 <Info className={`w-4 h-4 flex-shrink-0 ${theme.badgeText}`} />
@@ -1096,16 +1092,10 @@ export default function App() {
                             </button>
                             {expandedSummaries.has(`${llmName}-${analysisHwFilter}`) && (
                               <div className="mt-1 p-3 rounded-lg bg-white border border-slate-200 space-y-4 shadow-sm">
-                                {/* Summary Text */}
-                                {currentSummary && (
-                                  <div className="text-xs text-slate-700 leading-relaxed">
-                                    {currentSummary}
-                                  </div>
-                                )}
-                                
+
                                 {/* Strengths & Weaknesses */}
                                 {filteredAnalysis && (filteredAnalysis.strengths.length > 0 || filteredAnalysis.weaknesses.length > 0) && (
-                                  <div className={`space-y-3 ${currentSummary ? 'pt-3 border-t border-slate-200' : ''}`}>
+                                  <div className="space-y-3">
                                     {/* Strengths */}
                                     {filteredAnalysis.strengths.length > 0 && (
                                       <div>
@@ -1118,15 +1108,12 @@ export default function App() {
                                             <li key={idx} className="text-xs text-slate-700 flex items-start gap-2">
                                               <span className="text-emerald-600 font-bold mt-0.5">+</span>
                                               <span className="flex-1">{item.text}</span>
-                                              <span className="text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
-                                                {item.count}x
-                                              </span>
                                             </li>
                                           ))}
                                         </ul>
                                       </div>
                                     )}
-                                    
+
                                     {/* Weaknesses */}
                                     {filteredAnalysis.weaknesses.length > 0 && (
                                       <div>
@@ -1139,9 +1126,6 @@ export default function App() {
                                             <li key={idx} className="text-xs text-slate-700 flex items-start gap-2">
                                               <span className="text-red-600 font-bold mt-0.5">−</span>
                                               <span className="flex-1">{item.text}</span>
-                                              <span className="text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
-                                                {item.count}x
-                                              </span>
                                             </li>
                                           ))}
                                         </ul>
@@ -1149,9 +1133,9 @@ export default function App() {
                                     )}
                                   </div>
                                 )}
-                                
+
                                 {/* Show message if no data available */}
-                                {!currentSummary && (!filteredAnalysis || (filteredAnalysis.strengths.length === 0 && filteredAnalysis.weaknesses.length === 0)) && (
+                                {(!filteredAnalysis || (filteredAnalysis.strengths.length === 0 && filteredAnalysis.weaknesses.length === 0)) && (
                                   <div className="text-xs text-slate-500 italic">
                                     No analysis data available for this selection.
                                   </div>
