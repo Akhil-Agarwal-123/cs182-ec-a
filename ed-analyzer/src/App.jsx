@@ -1354,21 +1354,6 @@ export default function App() {
                                                                 Matchup data exists but has no diff summary.
                                                             </p>
                                                         )}
-
-                                                        {(arenaMatchup.winner_suggestion || arenaMatchup.confidence) && (
-                                                            <div className="mt-3 text-xs text-slate-600">
-                                                                {arenaMatchup.winner_suggestion && (
-                                                                    <span className="mr-3">
-                                                                        Suggested winner: <span className="font-bold">{arenaMatchup.winner_suggestion}</span>
-                           </span>
-                                                                )}
-                                                                {arenaMatchup.confidence && (
-                                                                    <span>
-                                                                        Confidence: <span className="font-bold">{arenaMatchup.confidence}</span>
-                          </span>
-                                                                )}
-                                            </div>
-                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
