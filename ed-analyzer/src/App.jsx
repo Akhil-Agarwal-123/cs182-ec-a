@@ -606,7 +606,10 @@ export default function App() {
     const [arenaSubmittingVote, setArenaSubmittingVote] = useState(false);
     const [arenaError, setArenaError] = useState(null);
 
+    // If VITE_HW_ARENA_API_BASE is set, use it (supports external API).
+    // Otherwise, in production, default to same-origin Vercel API routes under /api.
     const arenaApiBase = (import.meta?.env?.VITE_HW_ARENA_API_BASE || '').replace(/\/$/, '');
+    const arenaApiEnabled = !!arenaApiBase || import.meta.env.PROD;
 
     // Process data for charts and matrices
     const processedData = useMemo(() => {
@@ -693,11 +696,13 @@ export default function App() {
     }, [arenaHwFilter, processedData]);
 
     const fetchRemoteLeaderboard = async (hw) => {
-        if (!arenaApiBase) return null;
-        const url = `${arenaApiBase}/leaderboard?hw=${encodeURIComponent(hw ?? 'All')}`;
+        if (!arenaApiEnabled) return null;
+        const url = `${arenaApiBase}/api/leaderboard`;
         const res = await fetch(url, {method: 'GET'});
         if (!res.ok) throw new Error(`Leaderboard fetch failed (${res.status})`);
-        return await res.json();
+        const data = await res.json();
+        // Normalize shape (support both {models} and {ok, models}).
+        return data?.models ? data : data;
     };
 
     useEffect(() => {
@@ -722,7 +727,7 @@ export default function App() {
         return () => {
             cancelled = true;
         };
-    }, [arenaApiBase]);
+    }, [arenaApiBase, arenaApiEnabled]);
 
     const arenaPairKey = canonicalPairKey(arenaModelA, arenaModelB);
     const arenaVoteKey = voteStorageKey({hw: arenaHwFilter, modelA: arenaModelA, modelB: arenaModelB});
@@ -800,12 +805,12 @@ export default function App() {
         setArenaVotesByKey(nextVotes);
         window.localStorage.setItem(HW_ARENA_VOTES_KEY, JSON.stringify(nextVotes));
 
-        if (!arenaApiBase) return;
+        if (!arenaApiEnabled) return;
 
         setArenaSubmittingVote(true);
         setArenaError(null);
         try {
-            const res = await fetch(`${arenaApiBase}/vote`, {
+            const res = await fetch(`${arenaApiBase}/api/vote`, {
                 method: 'POST',
                 headers: {'content-type': 'application/json'},
                 body: JSON.stringify({
@@ -820,7 +825,7 @@ export default function App() {
                 const text = await res.text();
                 throw new Error(`Vote failed (${res.status}): ${text || 'unknown error'}`);
             }
-            const data = await fetchRemoteLeaderboard(arenaHwFilter);
+            const data = await fetchRemoteLeaderboard('All');
             setArenaRemoteLeaderboard(data);
         } catch (e) {
             setArenaError(e?.message || 'Failed to submit vote.');
