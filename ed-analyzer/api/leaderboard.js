@@ -1,4 +1,6 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const redis = Redis.fromEnv();
 
 function withCors(res) {
   res.setHeader('access-control-allow-origin', '*');
@@ -14,7 +16,7 @@ export default async function handler(req, res) {
 
   // Overall leaderboard only (no HW breakdown).
   // Stored as a Redis hash: field "<model>:w|l|t" => integer string.
-  const raw = (await kv.hgetall('hw_arena:leaderboard')) || {};
+  const raw = (await redis.hgetall('hw_arena:leaderboard')) || {};
 
   const models = {};
   for (const [field, val] of Object.entries(raw)) {

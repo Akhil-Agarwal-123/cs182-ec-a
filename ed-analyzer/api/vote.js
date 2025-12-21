@@ -1,4 +1,6 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const redis = Redis.fromEnv();
 
 function withCors(res) {
   res.setHeader('access-control-allow-origin', '*');
@@ -36,12 +38,13 @@ export default async function handler(req, res) {
   // Light anti-abuse: one vote per (hw, pair, clientId) for 1 year.
   // (Even though aggregation is overall, we keep hw in the dedup key so users can vote per-HW matchup.)
   const voteKey = `hw_arena:vote:${String(hw ?? 'unknown')}:${canonicalPairKey(modelA, modelB)}:${clientId}`;
-  const existing = await kv.get(voteKey);
+  const existing = await redis.get(voteKey);
   if (existing) return res.status(200).json({ ok: true, duplicate: true });
-  await kv.set(voteKey, '1', { ex: 60 * 60 * 24 * 365 });
+  await redis.set(voteKey, '1', { ex: 60 * 60 * 24 * 365 });
 
   const ops = [];
-  const inc = (model, metric, delta) => ops.push(kv.hincrby('hw_arena:leaderboard', `${model}:${metric}`, delta));
+  const inc = (model, metric, delta) =>
+    ops.push(redis.hincrby('hw_arena:leaderboard', `${model}:${metric}`, delta));
 
   if (winner === 'A') {
     inc(modelA, 'w', 1);
