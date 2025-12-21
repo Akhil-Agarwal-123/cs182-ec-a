@@ -707,7 +707,7 @@ export default function App() {
 
     useEffect(() => {
         let cancelled = false;
-        if (!arenaApiBase) {
+        if (!arenaApiEnabled) {
             setArenaRemoteLeaderboard(null);
             return;
         }
