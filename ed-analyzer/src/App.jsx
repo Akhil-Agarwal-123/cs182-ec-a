@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Bar, BarChart, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, XAxis, YAxis} from 'recharts';
 import {
     ChevronDown,
@@ -20,7 +20,66 @@ import {
 
 // Import local data
 import rawData from './data/posts.json';
-import summaryData from './data/analysis.json'
+import hwArenaData from './data/hw_arena.json';
+
+/* -------------------------------------------------------------------------- */
+/* HW Arena Utilities                                */
+/* -------------------------------------------------------------------------- */
+
+const HW_ARENA_CLIENT_ID_KEY = 'hwArenaClientIdV1';
+const HW_ARENA_VOTES_KEY = 'hwArenaVotesV1';
+
+const safeJsonParse = (value, fallback) => {
+    try {
+        if (!value) return fallback;
+        return JSON.parse(value);
+    } catch {
+        return fallback;
+    }
+};
+
+const getOrCreateArenaClientId = () => {
+    if (typeof window === 'undefined') return null;
+    const existing = window.localStorage.getItem(HW_ARENA_CLIENT_ID_KEY);
+    if (existing) return existing;
+    const clientId = `c_${Math.random().toString(16).slice(2)}_${Date.now().toString(16)}`;
+    window.localStorage.setItem(HW_ARENA_CLIENT_ID_KEY, clientId);
+    return clientId;
+};
+
+const canonicalPairKey = (a, b) => {
+    if (!a || !b) return '';
+    return [a, b].slice().sort((x, y) => x.localeCompare(y)).join('::');
+};
+
+const voteStorageKey = ({hw, modelA, modelB}) => `${hw}::${canonicalPairKey(modelA, modelB)}`;
+
+const computeLeaderboardFromVotes = (votesByKey, hwFilter = 'All') => {
+    const records = {};
+    const applyResult = (winner, modelA, modelB) => {
+        if (!records[modelA]) records[modelA] = {w: 0, l: 0, t: 0};
+        if (!records[modelB]) records[modelB] = {w: 0, l: 0, t: 0};
+        if (winner === 'A') {
+            records[modelA].w += 1;
+            records[modelB].l += 1;
+        } else if (winner === 'B') {
+            records[modelB].w += 1;
+            records[modelA].l += 1;
+        } else if (winner === 'T') {
+            records[modelA].t += 1;
+            records[modelB].t += 1;
+        }
+    };
+
+    for (const [key, vote] of Object.entries(votesByKey || {})) {
+        if (!vote) continue;
+        if (hwFilter !== 'All' && vote.hw?.toString() !== hwFilter?.toString()) continue;
+        if (!vote.modelA || !vote.modelB || !vote.winner) continue;
+        applyResult(vote.winner, vote.modelA, vote.modelB);
+    }
+
+    return records;
+};
 
 /* -------------------------------------------------------------------------- */
 /* Theme Logic                                 */
@@ -537,9 +596,17 @@ export default function App() {
     const [feedLlm, setFeedLlm] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Analysis State
-    const [analysisColumns, setAnalysisColumns] = useState(['Gpt', 'Claude']);
-    const [analysisHwFilter, setAnalysisHwFilter] = useState('All');
+    // HW Arena State
+    const [arenaHwFilter, setArenaHwFilter] = useState('All');
+    const [arenaModelA, setArenaModelA] = useState('Gpt');
+    const [arenaModelB, setArenaModelB] = useState('Claude');
+    const [arenaClientId, setArenaClientId] = useState(null);
+    const [arenaVotesByKey, setArenaVotesByKey] = useState({});
+    const [arenaRemoteLeaderboard, setArenaRemoteLeaderboard] = useState(null);
+    const [arenaSubmittingVote, setArenaSubmittingVote] = useState(false);
+    const [arenaError, setArenaError] = useState(null);
+
+    const arenaApiBase = (import.meta?.env?.VITE_HW_ARENA_API_BASE || '').replace(/\/$/, '');
 
     // Process data for charts and matrices
     const processedData = useMemo(() => {
@@ -608,14 +675,158 @@ export default function App() {
         setActiveTab('feed');
     };
 
-    const addColumn = (llm) => {
-        if (!analysisColumns.includes(llm)) {
-            setAnalysisColumns([...analysisColumns, llm]);
-        }
+    // Init local HW Arena state
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const id = getOrCreateArenaClientId();
+        setArenaClientId(id);
+        const votes = safeJsonParse(window.localStorage.getItem(HW_ARENA_VOTES_KEY), {});
+        setArenaVotesByKey(votes);
+    }, []);
+
+    // HW Arena no longer supports "All" — default to first available homework.
+    useEffect(() => {
+        if (arenaHwFilter !== 'All') return;
+        const firstHw = processedData?.homeworks?.[0];
+        if (firstHw === undefined || firstHw === null) return;
+        setArenaHwFilter(firstHw.toString());
+    }, [arenaHwFilter, processedData]);
+
+    const fetchRemoteLeaderboard = async (hw) => {
+        if (!arenaApiBase) return null;
+        const url = `${arenaApiBase}/leaderboard?hw=${encodeURIComponent(hw ?? 'All')}`;
+        const res = await fetch(url, {method: 'GET'});
+        if (!res.ok) throw new Error(`Leaderboard fetch failed (${res.status})`);
+        return await res.json();
     };
 
-    const removeColumn = (llm) => {
-        setAnalysisColumns(analysisColumns.filter(c => c !== llm));
+    useEffect(() => {
+        let cancelled = false;
+        if (!arenaApiBase) {
+            setArenaRemoteLeaderboard(null);
+            return;
+        }
+        (async () => {
+            try {
+                setArenaError(null);
+                // Leaderboard is overall (across all HWs).
+                const data = await fetchRemoteLeaderboard('All');
+                if (!cancelled) setArenaRemoteLeaderboard(data);
+            } catch (e) {
+                if (!cancelled) {
+                    setArenaRemoteLeaderboard(null);
+                    setArenaError(e?.message || 'Failed to fetch public leaderboard.');
+                }
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [arenaApiBase]);
+
+    const arenaPairKey = canonicalPairKey(arenaModelA, arenaModelB);
+    const arenaVoteKey = voteStorageKey({hw: arenaHwFilter, modelA: arenaModelA, modelB: arenaModelB});
+    const arenaExistingVote = arenaVotesByKey?.[arenaVoteKey] || null;
+    const arenaMatchup = (hwArenaData?.[arenaHwFilter] && arenaPairKey)
+        ? hwArenaData[arenaHwFilter][arenaPairKey]
+        : null;
+
+    const arenaPostsA = useMemo(() => {
+        return rawData.filter(p =>
+            p.llm === arenaModelA &&
+            p.homework_number?.toString() === arenaHwFilter?.toString()
+        );
+    }, [arenaModelA, arenaHwFilter]);
+
+    const arenaPostsB = useMemo(() => {
+        return rawData.filter(p =>
+            p.llm === arenaModelB &&
+            p.homework_number?.toString() === arenaHwFilter?.toString()
+        );
+    }, [arenaModelB, arenaHwFilter]);
+
+    const arenaLocalLeaderboard = useMemo(() => {
+        // Leaderboard is overall (across all HWs).
+        return computeLeaderboardFromVotes(arenaVotesByKey, 'All');
+    }, [arenaVotesByKey]);
+
+    const arenaDisplayLeaderboard = useMemo(() => {
+        // If the public API is configured and reachable, prefer it; otherwise fall back to local-only votes.
+        const remoteModels = arenaRemoteLeaderboard?.models;
+        const base = {};
+        // Always include all known models, even if they have 0 votes.
+        (processedData?.llms || []).forEach((m) => {
+            base[m] = {w: 0, l: 0, t: 0};
+        });
+
+        if (remoteModels && typeof remoteModels === 'object') {
+            return {...base, ...remoteModels};
+        }
+        return {...base, ...arenaLocalLeaderboard};
+    }, [arenaRemoteLeaderboard, arenaLocalLeaderboard, processedData]);
+
+    const arenaLeaderboardRows = useMemo(() => {
+        const rows = Object.entries(arenaDisplayLeaderboard || {}).map(([model, r]) => {
+            const w = Number(r?.w || 0);
+            const l = Number(r?.l || 0);
+            const t = Number(r?.t || 0);
+            const total = w + l + t;
+            const winRate = total > 0 ? (w + 0.5 * t) / total : 0;
+            return {model, w, l, t, total, winRate};
+        });
+        rows.sort((a, b) => (b.winRate - a.winRate) || (b.w - a.w) || (a.l - b.l) || a.model.localeCompare(b.model));
+        return rows;
+    }, [arenaDisplayLeaderboard]);
+
+    const submitArenaVote = async (winner) => {
+        if (!winner || (winner !== 'A' && winner !== 'B' && winner !== 'T')) return;
+        if (!arenaModelA || !arenaModelB || arenaModelA === arenaModelB) return;
+        if (!arenaHwFilter) return;
+        if (typeof window === 'undefined') return;
+        if (!arenaClientId) return;
+
+        // One vote per (hw, pair) per client in local storage (mirrors “light anti-abuse”).
+        const nextVotes = {
+            ...(arenaVotesByKey || {}),
+            [arenaVoteKey]: {
+                hw: arenaHwFilter,
+                modelA: arenaModelA,
+                modelB: arenaModelB,
+                winner,
+                ts: Date.now()
+            }
+        };
+
+        setArenaVotesByKey(nextVotes);
+        window.localStorage.setItem(HW_ARENA_VOTES_KEY, JSON.stringify(nextVotes));
+
+        if (!arenaApiBase) return;
+
+        setArenaSubmittingVote(true);
+        setArenaError(null);
+        try {
+            const res = await fetch(`${arenaApiBase}/vote`, {
+                method: 'POST',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify({
+                    hw: arenaHwFilter,
+                    modelA: arenaModelA,
+                    modelB: arenaModelB,
+                    winner,
+                    clientId: arenaClientId
+                })
+            });
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(`Vote failed (${res.status}): ${text || 'unknown error'}`);
+            }
+            const data = await fetchRemoteLeaderboard(arenaHwFilter);
+            setArenaRemoteLeaderboard(data);
+        } catch (e) {
+            setArenaError(e?.message || 'Failed to submit vote.');
+        } finally {
+            setArenaSubmittingVote(false);
+        }
     };
 
     return (
@@ -637,7 +848,7 @@ export default function App() {
                             {[
                                 {id: 'overview', label: 'Overview', icon: LayoutDashboard},
                                 {id: 'feed', label: 'Post Feed', icon: List},
-                                {id: 'analysis', label: 'Model Analysis', icon: Maximize2},
+                                {id: 'arena', label: 'HW Arena', icon: Maximize2},
                             ].map(tab => (
                                 <button
                                     key={tab.id}
@@ -968,22 +1179,21 @@ export default function App() {
                     </div>
                 )}
 
-                {/* --- View 3: Model Analysis (Columnar) --- */}
-                {activeTab === 'analysis' && (
+                {/* --- View 3: HW Arena (Head-to-Head) --- */}
+                {activeTab === 'arena' && (
                     <div className="flex flex-col h-full w-full overflow-hidden animate-in fade-in duration-300">
 
-                        {/* Analysis Controls */}
+                        {/* Arena Controls */}
                         <Card className="flex-none p-4 mb-4 flex flex-wrap items-center gap-6 z-10 relative min-w-0">
                             {/* Homework Dropdown */}
                             <div className="flex items-center gap-3">
                                 <label className="text-sm font-bold text-slate-700">Homework:</label>
                                 <div className="relative">
                                     <select
-                                        value={analysisHwFilter}
-                                        onChange={(e) => setAnalysisHwFilter(e.target.value)}
+                                        value={arenaHwFilter}
+                                        onChange={(e) => setArenaHwFilter(e.target.value)}
                                         className="appearance-none bg-slate-50 border border-slate-300 text-slate-900 text-sm font-medium rounded-lg focus:ring-blue-500 block w-48 p-2.5 pr-8 outline-none focus:outline-none select-none"
                                     >
-                                        <option value="All">All Assignments</option>
                                         {processedData.homeworks.map(hw => (
                                             <option key={hw} value={hw}>
                                                 {hw === -1 ? 'Unknown Homework' : `Homework ${hw}`}
@@ -997,115 +1207,274 @@ export default function App() {
 
                             <div className="h-8 w-px bg-slate-200 mx-2 hidden md:block"></div>
 
-                            {/* Column Adder */}
-                            <div className="flex items-center gap-3 flex-1 overflow-x-auto min-w-0">
-                                <label className="text-sm font-bold text-slate-700 whitespace-nowrap">Add
-                                    Column:</label>
-                                <div className="flex gap-2">
-                                    {processedData.llms.map(llm => {
-                                        const isActive = analysisColumns.includes(llm);
-                                        const theme = getModelTheme(llm);
-                                        if (isActive) return null;
-                                        return (
-                                            <button
-                                                key={llm}
-                                                onClick={() => addColumn(llm)}
-                                                className={`text-xs font-bold px-3 py-1.5 rounded-full border bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:shadow-sm transition-all flex items-center gap-1 ${theme.hover} focus:outline-none select-none`}
-                                            >
-                                                <Plus className="w-3 h-3"/>
-                                                {llm}
-                                            </button>
-                                        )
-                                    })}
+                            {/* Model A */}
+                            <div className="flex items-center gap-3">
+                                <label className="text-sm font-bold text-slate-700 whitespace-nowrap">Model A:</label>
+                                <div className="relative">
+                                    <select
+                                        value={arenaModelA}
+                                        onChange={(e) => {
+                                            const nextA = e.target.value;
+                                            setArenaModelA(nextA);
+                                            if (nextA === arenaModelB) {
+                                                const fallback = processedData.llms.find(m => m !== nextA) || nextA;
+                                                setArenaModelB(fallback);
+                                            }
+                                        }}
+                                        className="appearance-none bg-white border border-slate-300 text-slate-900 text-sm font-medium rounded-lg focus:ring-blue-500 block w-48 p-2.5 pr-8 outline-none focus:outline-none select-none"
+                                    >
+                                        {processedData.llms.map(llm => (
+                                            <option key={llm} value={llm}>{llm}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronDown className="w-4 h-4 text-slate-500 absolute right-3 top-3 pointer-events-none"/>
                                 </div>
                             </div>
-                        </Card>
 
-                        {/* Horizontal Scroll Container */}
-                        <div className="flex h-full overflow-x-scroll gap-4 px-1">
-                            {analysisColumns.length === 0 && (
-                                <div
-                                    className="w-full flex items-center justify-center bg-slate-50 rounded-xl border-2 border-dashed border-slate-300">
-                                    <div className="text-center">
-                                        <Maximize2 className="w-12 h-12 text-slate-300 mx-auto mb-3"/>
-                                        <p className="text-slate-500 font-medium">Select models above to compare
-                                            analysis.</p>
+                            {/* Model B */}
+                            <div className="flex items-center gap-3">
+                                <label className="text-sm font-bold text-slate-700 whitespace-nowrap">Model B:</label>
+                                <div className="relative">
+                                    <select
+                                        value={arenaModelB}
+                                        onChange={(e) => {
+                                            const nextB = e.target.value;
+                                            setArenaModelB(nextB);
+                                            if (nextB === arenaModelA) {
+                                                const fallback = processedData.llms.find(m => m !== nextB) || nextB;
+                                                setArenaModelA(fallback);
+                                            }
+                                        }}
+                                        className="appearance-none bg-white border border-slate-300 text-slate-900 text-sm font-medium rounded-lg focus:ring-blue-500 block w-48 p-2.5 pr-8 outline-none focus:outline-none select-none"
+                                    >
+                                        {processedData.llms.map(llm => (
+                                            <option key={llm} value={llm}>{llm}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronDown className="w-4 h-4 text-slate-500 absolute right-3 top-3 pointer-events-none"/>
                                     </div>
                                 </div>
-                            )}
-                            {/* Dynamic Columns */}
-                            {analysisColumns.map(llmName => {
-                                const theme = getModelTheme(llmName);
-                                const columnPosts = rawData.filter(p =>
-                                    p.llm === llmName &&
-                                    (analysisHwFilter === 'All' || p.homework_number.toString() === analysisHwFilter.toString())
-                                );
+                        </Card>
 
-                                // Retrieve Summary for this LLM/HW Combo
-                                const currentSummary = (summaryData[llmName])
-                                    ? summaryData[llmName][analysisHwFilter.toString()]
-                                    : null;
+                        {/* Scrollable Arena Content */}
+                        <div className="flex h-full overflow-y-auto pb-20 pr-2">
+                            <div className="w-full space-y-4">
+                                {/* Leaderboard */}
+                                <Card className="p-5">
+                                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                                        <div>
+                                            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                                <Maximize2 className="w-5 h-5 text-blue-500"/>
+                                                Leaderboard
+                                            </h2>
+                                            {arenaError && (
+                                                <p className="text-xs text-red-600 mt-2">{arenaError}</p>
+                                            )}
+                                        </div>
+                                    </div>
 
+                                    <div className="mt-4 overflow-x-auto">
+                                        <table className="w-full text-sm border-collapse">
+                                            <thead>
+                                            <tr className="bg-slate-50 border-b border-slate-200">
+                                                <th className="p-2 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Model</th>
+                                                <th className="p-2 text-center text-xs font-bold text-slate-600 uppercase tracking-wider">W</th>
+                                                <th className="p-2 text-center text-xs font-bold text-slate-600 uppercase tracking-wider">L</th>
+                                                <th className="p-2 text-center text-xs font-bold text-slate-600 uppercase tracking-wider">T</th>
+                                                <th className="p-2 text-center text-xs font-bold text-slate-600 uppercase tracking-wider">Score</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {arenaLeaderboardRows.length > 0 ? arenaLeaderboardRows.map((r) => {
+                                                const theme = getModelTheme(r.model);
                                 return (
-                                    <div
-                                        key={llmName}
-                                        className="flex-none w-[400px] flex flex-col h-full bg-slate-50 rounded-xl border border-slate-200 overflow-hidden shadow-sm"
-                                    >
-                                        {/* Column Header */}
-                                        <div className={`p-4 bg-slate-100 border-b border-t-4 ${theme.borderTop}`}>
-                                            <div className="flex justify-between items-start mb-1">
-                                                <h3 className={`text-lg font-black ${theme.titleText} uppercase tracking-wide`}>{llmName}</h3>
-                                                <button
-                                                    onClick={() => removeColumn(llmName)}
-                                                    className="text-black-300 hover:text-red-500 transition-colors p-1 bg-white outline-none focus:outline-none select-none border-none"
-                                                    title="Remove Column"
-                                                >
-                                                    <Trash2 className="w-4 h-4"/>
-                                                </button>
-                                            </div>
-                                            <div className="flex justify-between items-center text-xs mb-2">
-                           <span className="text-slate-500 font-medium">
-                              {analysisHwFilter === 'All'
-                                  ? 'All Assignments'
-                                  : (analysisHwFilter.toString() === '-1' ? 'Unknown Homework' : `Homework ${analysisHwFilter}`)
-                              }
-                           </span>
-                                                <span
-                                                    className={`px-2 py-0.5 rounded-full font-bold bg-slate-100 text-slate-600`}>
-                            {columnPosts.length} Posts
-                          </span>
-                                            </div>
+                                                    <tr key={r.model} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                                                        <td className="p-2 font-semibold text-slate-900">
+                                                            <span className={`inline-flex items-center gap-2`}>
+                                                                <span className={`w-2 h-2 rounded-full`} style={{backgroundColor: theme.barFill}}/>
+                                                                {r.model}
+                                                            </span>
+                                                        </td>
+                                                        <td className="p-2 text-center font-bold text-slate-800">{r.w}</td>
+                                                        <td className="p-2 text-center font-bold text-slate-800">{r.l}</td>
+                                                        <td className="p-2 text-center font-bold text-slate-800">{r.t}</td>
+                                                        <td className="p-2 text-center text-slate-700 font-medium">
+                                                            {(r.winRate * 100).toFixed(0)}%
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }) : (
+                                                <tr>
+                                                    <td colSpan={5} className="p-4 text-center text-sm text-slate-500 italic">
+                                                        No votes yet. Pick two models and vote to get started.
+                                                    </td>
+                                                </tr>
+                                            )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </Card>
 
-                                            {/* --- Performance Summary --- */}
-                                            {currentSummary && (
-                                                <div
-                                                    className={`mt-2 p-3 rounded-lg border ${theme.badgeBg} ${theme.badgeBorder} flex items-start gap-2`}>
-                                                    <Info
-                                                        className={`w-4 h-4 flex-shrink-0 mt-0.5 ${theme.badgeText}`}/>
-                                                    <div className="text-xs text-slate-700 leading-relaxed">
-                                                        <span className={`font-bold block mb-1 ${theme.badgeText}`}>Performance Summary:</span>
-                                                        {currentSummary}
+                                {/* Matchup */}
+                                <Card className="p-5">
+                                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                                        <div>
+                                            <h3 className="text-base font-bold text-slate-800">
+                                                {arenaModelA} vs {arenaModelB}
+                                            </h3>
+                                            <p className="text-xs text-slate-500 mt-1">
+                                                {arenaHwFilter.toString() === '-1' ? 'Unknown homework' : `Homework ${arenaHwFilter}`}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {arenaExistingVote && (
+                                        <div className="mt-3 text-xs text-slate-600">
+                                            Your vote: <span className="font-bold">{arenaExistingVote.winner === 'A' ? arenaModelA : arenaExistingVote.winner === 'B' ? arenaModelB : 'Tie'}</span>
+                                        </div>
+                                    )}
+
+                                    <div className="mt-4">
+                                        {arenaMatchup ? (
+                                            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                                                <div className="flex items-start gap-2">
+                                                    <Info className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0"/>
+                                                    <div className="text-sm text-slate-800">
+                                                        <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                                                            Differences (generated)
+                                                        </div>
+                                                        {Array.isArray(arenaMatchup.diff_summary) && arenaMatchup.diff_summary.length > 0 ? (
+                                                            <ul className="list-disc list-inside space-y-1 text-sm text-slate-700">
+                                                                {arenaMatchup.diff_summary.map((item, idx) => (
+                                                                    <li key={idx}>{item}</li>
+                                                                ))}
+                                                            </ul>
+                                                        ) : (
+                                                            <p className="text-sm text-slate-600 italic">
+                                                                Matchup data exists but has no diff summary.
+                                                            </p>
+                                                        )}
+
+                                                        {(arenaMatchup.winner_suggestion || arenaMatchup.confidence) && (
+                                                            <div className="mt-3 text-xs text-slate-600">
+                                                                {arenaMatchup.winner_suggestion && (
+                                                                    <span className="mr-3">
+                                                                        Suggested winner: <span className="font-bold">{arenaMatchup.winner_suggestion}</span>
+                           </span>
+                                                                )}
+                                                                {arenaMatchup.confidence && (
+                                                                    <span>
+                                                                        Confidence: <span className="font-bold">{arenaMatchup.confidence}</span>
+                          </span>
+                                                                )}
+                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                                                <div className="text-sm text-amber-900 font-semibold mb-1">No matchup annotation found.</div>
+                                                <div className="text-xs text-amber-900/80">
+                                                    Generate <span className="font-mono">src/data/hw_arena.json</span> with the Python script (see <span className="font-mono">generate_hw_arena.py</span>).
                                                     </div>
                                                 </div>
                                             )}
                                         </div>
+                                </Card>
 
-                                        {/* Scrollable Post List */}
-                                        <div className="p-3 space-y-3 custom-scrollbar">
-                                            {columnPosts.length > 0 ? (
-                                                columnPosts.map(post => (
+                                {/* Evidence: posts side-by-side */}
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                    <Card className="p-4">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <h4 className="text-sm font-bold text-slate-800">{arenaModelA}</h4>
+                                            <span className="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
+                                                {arenaPostsA.length} posts
+                                            </span>
+                                        </div>
+                                        <div className="space-y-3 custom-scrollbar">
+                                            {arenaPostsA.length > 0 ? arenaPostsA.map(post => (
                                                     <AccordionPost key={post.id} post={post}/>
-                                                ))
-                                            ) : (
-                                                <div className="text-center py-12">
-                                                    <p className="text-sm text-slate-400 italic">No posts found for this
-                                                        selection.</p>
+                                            )) : (
+                                                <div className="text-center py-8 text-sm text-slate-400 italic">No posts found.</div>
+                                            )}
                                                 </div>
+                                    </Card>
+
+                                    <Card className="p-4">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <h4 className="text-sm font-bold text-slate-800">{arenaModelB}</h4>
+                                            <span className="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
+                                                {arenaPostsB.length} posts
+                                            </span>
+                                        </div>
+                                        <div className="space-y-3 custom-scrollbar">
+                                            {arenaPostsB.length > 0 ? arenaPostsB.map(post => (
+                                                <AccordionPost key={post.id} post={post}/>
+                                            )) : (
+                                                <div className="text-center py-8 text-sm text-slate-400 italic">No posts found.</div>
                                             )}
                                         </div>
+                                    </Card>
                                     </div>
-                                );
-                            })}
+
+                                {/* Voting controls (below post boxes) */}
+                                <Card className="p-5">
+                                    <div className="flex items-center justify-between gap-4 flex-wrap">
+                                        <div>
+                                            <div className="text-sm font-bold text-slate-800">Vote winner</div>
+                                            <div className="text-xs text-slate-500 mt-1">
+                                                Pick who performed better on {arenaHwFilter.toString() === '-1' ? 'Unknown homework' : `Homework ${arenaHwFilter}`}.
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3">
+                                            <button
+                                                disabled={!!arenaExistingVote || arenaSubmittingVote || arenaModelA === arenaModelB}
+                                                onClick={() => submitArenaVote('A')}
+                                                className={`px-5 py-3 text-sm font-extrabold rounded-xl border transition-colors ${
+                                                    !!arenaExistingVote
+                                                        ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
+                                                        : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
+                                                } focus:outline-none select-none`}
+                                                title={arenaExistingVote ? 'You already voted on this matchup.' : `Vote ${arenaModelA}`}
+                                            >
+                                                {arenaModelA} wins
+                                            </button>
+                                            <button
+                                                disabled={!!arenaExistingVote || arenaSubmittingVote || arenaModelA === arenaModelB}
+                                                onClick={() => submitArenaVote('T')}
+                                                className={`px-5 py-3 text-sm font-extrabold rounded-xl border transition-colors ${
+                                                    !!arenaExistingVote
+                                                        ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
+                                                        : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
+                                                } focus:outline-none select-none`}
+                                                title={arenaExistingVote ? 'You already voted on this matchup.' : 'Vote tie'}
+                                            >
+                                                Tie
+                                            </button>
+                                            <button
+                                                disabled={!!arenaExistingVote || arenaSubmittingVote || arenaModelA === arenaModelB}
+                                                onClick={() => submitArenaVote('B')}
+                                                className={`px-5 py-3 text-sm font-extrabold rounded-xl border transition-colors ${
+                                                    !!arenaExistingVote
+                                                        ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
+                                                        : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
+                                                } focus:outline-none select-none`}
+                                                title={arenaExistingVote ? 'You already voted on this matchup.' : `Vote ${arenaModelB}`}
+                                            >
+                                                {arenaModelB} wins
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {arenaExistingVote && (
+                                        <div className="mt-3 text-xs text-slate-600">
+                                            Your vote: <span className="font-bold">{arenaExistingVote.winner === 'A' ? arenaModelA : arenaExistingVote.winner === 'B' ? arenaModelB : 'Tie'}</span>
+                                        </div>
+                                    )}
+                                </Card>
+                            </div>
                         </div>
                     </div>
                 )}
