@@ -58,6 +58,8 @@ def main():
         if hwk_num is not None:
             post['homework_number'] = int(hwk_num)
             # print(post['title'], '\n\t-> Homework', post['homework_number'])
+        elif "Overthinks Less in Chinese" in post['title']: 
+            post['homework_number'] = 11
         else:
             post['homework_number'] = -1
             # print(post['title'], '\n\t-> Unknown Homework')

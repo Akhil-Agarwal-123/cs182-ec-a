@@ -21,6 +21,24 @@ import {
 // Import local data
 import rawData from './data/posts.json';
 import hwArenaData from './data/hw_arena.json';
+import modelAnalysisData from './data/model_analysis.json';
+
+const HW_PDFS = {
+    0: "/pdfs/hw0.pdf",
+    1: "/pdfs/hw1.pdf",
+    2: "/pdfs/hw2.pdf",
+    3: "/pdfs/hw3.pdf",
+    4: "/pdfs/hw4.pdf",
+    5: "/pdfs/hw5.pdf",
+    6: "/pdfs/hw6.pdf",
+    7: "/pdfs/hw7.pdf",
+    8: "/pdfs/hw8.pdf",
+    9: "/pdfs/hw9.pdf",
+    10: "/pdfs/hw10.pdf",
+    11: "/pdfs/hw11.pdf",
+    12: "/pdfs/hw12.pdf",
+    13: "/pdfs/hw13.pdf",
+};
 
 /* -------------------------------------------------------------------------- */
 /* HW Arena Utilities                                */
@@ -846,7 +864,7 @@ export default function App() {
                                 alt="Special Participation Analyzer Logo"
                                 className="w-10 h-10 object-contain rounded-lg bg-white"
                             />
-                            <span className="text-xl font-bold text-slate-900 tracking-tight">Special Participation Analyzer</span>
+                            <span className="text-xl font-bold text-slate-900 tracking-tight">EECS 182/282 Fall 2025 — LLM Performance on Homework</span>
                         </div>
 
                         <div className="flex items-center gap-1">
@@ -947,7 +965,22 @@ export default function App() {
                                         {processedData.pivotData.map((row) => (
                                             <tr key={row.name}
                                                 className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                                <td className="p-3 font-medium text-slate-900">{row.name}</td>
+                                                <td className="p-3 font-medium text-slate-900">
+                                                    {HW_PDFS[row.hwId] ? (
+                                                        <a 
+                                                            href={HW_PDFS[row.hwId]} 
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer"
+                                                            className="hover:text-blue-600 hover:underline flex items-center gap-1"
+                                                            title="Open Homework PDF"
+                                                        >
+                                                            {row.name} 
+                                                            <ExternalLink className="w-3 h-3 opacity-50" />
+                                                        </a>
+                                                    ) : (
+                                                        row.name
+                                                    )}
+                                                </td>
 
                                                 {/* Top 6 Cells */}
                                                 {processedData.topLLMs.map(llm => {
@@ -1147,6 +1180,17 @@ export default function App() {
 
                         {/* Main Feed Content */}
                         <div className="lg:col-span-3 h-full overflow-y-auto pb-20 pr-2">
+                            {feedLlm !== 'All' && modelAnalysisData[feedLlm] && (
+                                <Card className="mb-4 p-5 bg-gradient-to-r from-blue-50/50 to-indigo-50/50 border-blue-100">
+                                    <h3 className="text-sm font-bold text-blue-900 mb-2 flex items-center gap-2">
+                                        <Info className="w-4 h-4 text-blue-600"/>
+                                        Performance Summary: {feedLlm} on {feedHw === 'All' ? 'All HWs' : `HW ${feedHw}`}
+                                    </h3>
+                                    <p className="text-sm text-slate-700 leading-relaxed">
+                                        {modelAnalysisData[feedLlm][feedHw] || "No summary data available for this specific selection."}
+                                    </p>
+                                </Card>
+                            )}
                             <div
                                 className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-4">
                                 <h3 className="text-sm font-medium text-slate-600">
@@ -1267,11 +1311,15 @@ export default function App() {
                                 {/* Leaderboard */}
                                 <Card className="p-5">
                                     <div className="flex items-start justify-between gap-4 flex-wrap">
-                                        <div>
+                                        <div className="w-full">
                                             <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                                                 <Maximize2 className="w-5 h-5 text-blue-500"/>
                                                 Leaderboard
                                             </h2>
+                                            <p className="text-sm text-slate-500 mt-2">
+                                                Models are ranked by <strong>Score</strong>, which is the win rate calculated as <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">(Wins + 0.5 × Ties) / Total Matches</span>. 
+                                                Columns W, L, and T stand for Wins, Losses, and Ties respectively.
+                                            </p>
                                             {arenaError && (
                                                 <p className="text-xs text-red-600 mt-2">{arenaError}</p>
                                             )}
@@ -1469,6 +1517,11 @@ export default function App() {
                     </div>
                 )}
 
+            </div>
+            <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-t border-slate-200 py-2 px-4 text-center z-40">
+                <p className="text-xs font-medium text-slate-500">
+                    Built and designed by Akhil Agarwal, Aryan Bansal, Nikhil Mathihalli, and Tyler Pham — students in EECS 182 Fall 2025. Faculty: Prof. Anant Sahai and Prof. Gireeja Ranade.
+                </p>
             </div>
         </div>
     );
