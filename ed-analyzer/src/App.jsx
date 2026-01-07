@@ -1311,11 +1311,15 @@ export default function App() {
                                 {/* Leaderboard */}
                                 <Card className="p-5">
                                     <div className="flex items-start justify-between gap-4 flex-wrap">
-                                        <div>
+                                        <div className="w-full">
                                             <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                                                 <Maximize2 className="w-5 h-5 text-blue-500"/>
                                                 Leaderboard
                                             </h2>
+                                            <p className="text-sm text-slate-500 mt-2">
+                                                Models are ranked by <strong>Score</strong>, which is the win rate calculated as <span className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">(Wins + 0.5 × Ties) / Total Matches</span>. 
+                                                Columns W, L, and T stand for Wins, Losses, and Ties respectively.
+                                            </p>
                                             {arenaError && (
                                                 <p className="text-xs text-red-600 mt-2">{arenaError}</p>
                                             )}
